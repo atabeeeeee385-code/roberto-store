@@ -1,0 +1,48 @@
+{
+  "name": "ROBERTO",
+  "short_name": "ROBERTO",
+  "description": "Premium Tech Store - كيبوردات وماوس وملحقات",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1117",
+  "theme_color": "#3fb950",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["shopping", "electronics"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "المنتجات",
+      "short_name": "المنتجات",
+      "url": "./index.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "لوحة التحكم",
+      "short_name": "الأدمن",
+      "url": "./admin.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
