@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROBERTO | Premium Tech Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e1a;
+    --bg2:#111827;
+    --card:#151b2b;
+    --line:rgba(255,255,255,.08);
+    --txt:#e5e7eb;
+    --muted:#94a3b8;
+    --accent:#e11d48;
+    --accent2:#f59e0b;
+    --gold:#fbbf24;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg); color:var(--txt); overflow-x:hidden;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(225,29,72,.12), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(245,158,11,.10), transparent 45%);
+    background-attachment:fixed;
+  }
+  a{text-decoration:none;color:inherit;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+
+  /* ============ HEADER ============ */
+  header{
+    position:sticky; top:0; z-index:900;
+    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+    background:rgba(10,14,26,.65);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    max-width:1280px; margin:auto; padding:14px 22px;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .logo{display:flex;align-items:center;gap:10px;}
+  .logo-mark{
+    width:40px;height:40px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:grid;place-items:center;font-weight:900;color:#fff;font-size:20px;
+    box-shadow:0 0 22px rgba(225,29,72,.5);
+  }
+  .logo-text{
+    font-size:22px;font-weight:900;letter-spacing:4px;
+    background:linear-gradient(90deg,var(--accent),var(--gold));
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+  .search-wrap{flex:1;min-width:180px;position:relative;}
+  .search-wrap svg{
+    position:absolute;top:50%;right:14px;transform:translateY(-50%);
+    opacity:.5;pointer-events:none;
+  }
+  .search{
+    width:100%;background:rgba(255,255,255,.04);
+    border:1px solid var(--line); border-radius:12px;
+    padding:11px 42px 11px 14px;color:#fff;font-size:15px;transition:.25s;
+  }
+  .search:focus{outline:none;border-color:var(--accent);background:rgba(225,29,72,.06);}
+  .search::placeholder{color:var(--muted);}
+  .icon-btn{
+    background:rgba(255,255,255,.05); color:#fff; border:1px solid var(--line);
+    width:44px; height:44px; border-radius:12px; display:grid; place-items:center;
+    transition:.25s; position:relative; font-size:18px;
+  }
+  .icon-btn:hover{background:rgba(225,29,72,.15); border-color:var(--accent);}
+  .icon-btn .badge{
+    position:absolute;top:-6px;right:-6px;background:var(--accent);color:#fff;
+    font-size:11px;font-weight:800;border-radius:50%;min-width:20px;height:20px;
+    display:grid;place-items:center;padding:0 5px;box-shadow:0 0 12px rgba(225,29,72,.6);
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    max-width:1280px; margin:30px auto; padding:70px 30px;
+    border-radius:26px; position:relative; overflow:hidden;
+    background:linear-gradient(135deg,#0d1220 0%,#1a1024 50%,#1a1005 100%);
+    border:1px solid var(--line);
+  }
+  .hero::before{
+    content:''; position:absolute; inset:-50%;
+    background:conic-gradient(from 0deg,transparent,var(--accent),transparent 30%,transparent 60%,var(--accent2),transparent);
+    animation:spin 8s linear infinite; opacity:.15;
+  }
+  .hero::after{
+    content:''; position:absolute; inset:2px; border-radius:24px;
+    background:linear-gradient(135deg,#0d1220,#151b2b);
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .hero-inner{position:relative;z-index:2;text-align:center;}
+  .hero-badge{
+    display:inline-block;padding:7px 18px;border-radius:50px;
+    background:rgba(225,29,72,.12); border:1px solid rgba(225,29,72,.35);
+    color:var(--gold); font-size:13px; font-weight:700; letter-spacing:2px;
+    margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:46px; font-weight:900; line-height:1.25; margin-bottom:16px;
+    background:linear-gradient(120deg,#fff 30%,var(--gold) 60%,var(--accent) 90%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:shine 4s ease infinite;
+    background-size:200% auto;
+  }
+  @keyframes shine{to{background-position:200% center;}}
+  .hero p{color:var(--muted);font-size:17px;margin-bottom:32px;max-width:620px;margin-inline:auto;}
+  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff;
+    padding:14px 34px; border-radius:14px; font-weight:800; font-size:15px;
+    transition:.3s; box-shadow:0 10px 30px rgba(225,29,72,.35);
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(225,29,72,.55);}
+  .btn-ghost{
+    background:rgba(255,255,255,.05); color:#fff; padding:14px 34px;
+    border-radius:14px; font-weight:700; font-size:15px; border:1px solid var(--line);
+    transition:.3s;
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.1);}
+
+  /* ============ STATS ============ */
+  .stats{
+    max-width:1280px; margin:0 auto 20px; padding:0 22px;
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;
+  }
+  .stat{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:18px 20px; transition:.3s;
+  }
+  .stat:hover{border-color:var(--accent);transform:translateY(-3px);}
+  .stat .num{
+    font-size:26px; font-weight:900;
+    background:linear-gradient(135deg,var(--accent),var(--gold));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .stat .lbl{color:var(--muted);font-size:13px;margin-top:4px;}
+
+  /* ============ CATEGORIES ============ */
+  .cats{
+    max-width:1280px;margin:26px auto 0;padding:0 22px;
+    display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+  }
+  .cat{
+    background:rgba(255,255,255,.04); color:var(--txt);
+    border:1px solid var(--line); padding:10px 22px; border-radius:50px;
+    font-weight:700; font-size:14px; transition:.25s;
+  }
+  .cat:hover{border-color:var(--accent);color:#fff;}
+  .cat.active{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff; border-color:transparent; box-shadow:0 8px 22px rgba(225,29,72,.4);
+  }
+
+  /* ============ PRODUCTS GRID ============ */
+  .section-head{
+    max-width:1280px;margin:44px auto 0;padding:0 22px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .section-head h2{font-size:26px;font-weight:900;}
+  .section-head::before{
+    content:'';width:6px;height:28px;border-radius:6px;
+    background:linear-gradient(var(--accent),var(--accent2));
+  }
+  .products{
+    max-width:1280px;margin:22px auto;padding:0 22px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;
+  }
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    overflow:hidden; transition:.4s cubic-bezier(.2,.8,.2,1); position:relative;
+    display:flex; flex-direction:column;
+    opacity:0; transform:translateY(30px);
+  }
+  .card.show{opacity:1;transform:translateY(0);}
+  .card:hover{
+    transform:translateY(-8px); border-color:rgba(225,29,72,.5);
+    box-shadow:0 22px 50px rgba(0,0,0,.5), 0 0 40px rgba(225,29,72,.15);
+  }
+  .card .img{
+    height:200px; background:linear-gradient(135deg,#1a2035,#0f1420);
+    display:grid;place-items:center;font-size:64px;position:relative;overflow:hidden;
+  }
+  .card .img img{
+    width:100%;height:100%;object-fit:cover;transition:.5s;
+  }
+  .card:hover .img img{transform:scale(1.08);}
+  .card .img::after{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at center, rgba(225,29,72,.15), transparent 70%);
+    opacity:0;transition:.4s;pointer-events:none;
+  }
+  .card:hover .img::after{opacity:1;}
+  .card .sale{
+    position:absolute;top:12px;right:12px;background:var(--accent);color:#fff;
+    font-size:11px;font-weight:800;padding:4px 10px;border-radius:8px;
+    box-shadow:0 4px 14px rgba(225,29,72,.5); z-index:2;
+  }
+  .card .wish{
+    position:absolute;top:12px;left:12px;width:34px;height:34px;
+    background:rgba(0,0,0,.4);backdrop-filter:blur(10px);
+    border-radius:50%; display:grid;place-items:center;font-size:15px;
+    color:#fff; transition:.25s; z-index:2;
+  }
+  .card .wish:hover, .card .wish.on{background:var(--accent);transform:scale(1.1);}
+  .card .info{padding:16px;display:flex;flex-direction:column;flex:1;}
+  .card .tag{
+    font-size:11px;color:var(--gold);background:rgba(251,191,36,.1);
+    padding:4px 10px;border-radius:6px;align-self:flex-start;margin-bottom:10px;
+    font-weight:700;
+  }
+  .card h3{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:10px;min-height:44px;}
+  .card .price{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+  .card .price .now{color:#fff;font-weight:900;font-size:19px;}
+  .card .price .old{color:var(--muted);font-size:13px;text-decoration:line-through;}
+  .card .actions{display:flex;gap:8px;margin-top:auto;}
+  .card .view{
+    flex:0 0 44px;background:rgba(255,255,255,.05);border:1px solid var(--line);
+    color:#fff;border-radius:12px;font-size:18px;display:grid;place-items:center;
+    transition:.25s;
+  }
+  .card .view:hover{background:rgba(255,255,255,.1);}
+  .card .add{
+    flex:1;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;padding:12px;border-radius:12px;font-weight:800;font-size:14px;
+    transition:.25s;
+  }
+  .card .add:hover{filter:brightness(1.15);box-shadow:0 8px 22px rgba(225,29,72,.4);}
+
+  /* ============ CART DRAWER ============ */
+  .overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
+    opacity:0;visibility:hidden;transition:.3s;z-index:990;
+  }
+  .overlay.open{opacity:1;visibility:visible;}
+  .drawer{
+    position:fixed;top:0;left:0;height:100%;width:400px;max-width:92%;
+    background:var(--bg2);z-index:991;transform:translateX(-100%);
+    transition:.35s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;
+    border-right:1px solid var(--line);
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer-head{
+    padding:20px;background:linear-gradient(135deg,#0d1220,#1a1024);
+    display:flex;justify-content:space-between;align-items:center;
+    border-bottom:1px solid var(--line);
+  }
+  .drawer-head h3{font-size:18px;font-weight:900;}
+  .drawer-head h3 span{color:var(--gold);}
+  .drawer-head .close{
+    background:rgba(255,255,255,.06);color:#fff;width:36px;height:36px;
+    border-radius:10px;font-size:20px;line-height:1;
+  }
+  .drawer-items{flex:1;overflow-y:auto;padding:16px;}
+  .drawer-items::-webkit-scrollbar{width:6px;}
+  .drawer-items::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:6px;}
+  .empty{text-align:center;color:var(--muted);padding:60px 20px;font-size:15px;}
+  .item{
+    display:flex;gap:12px;padding:14px;border-radius:14px;
+    background:rgba(255,255,255,.03);margin-bottom:10px;align-items:center;
+    border:1px solid var(--line);transition:.25s;
+  }
+  .item:hover{border-color:rgba(225,29,72,.4);}
+  .item .ico{
+    width:56px;height:56px;border-radius:12px;
+    background:linear-gradient(135deg,#1a2035,#0f1420);
+    display:grid;place-items:center;font-size:26px;flex-shrink:0;overflow:hidden;
+  }
+  .item .ico img{width:100%;height:100%;object-fit:cover;}
+  .item .details{flex:1;min-width:0;}
+  .item h4{font-size:13px;font-weight:700;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .item .row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);}
+  .qty-btn{
+    background:rgba(255,255,255,.08);color:#fff;width:26px;height:26px;
+    border-radius:8px;font-weight:800;font-size:14px;transition:.2s;
+  }
+  .qty-btn:hover{background:var(--accent);}
+  .remove{background:none;color:#ef4444;font-size:17px;padding:4px;}
+  .drawer-foot{padding:20px;border-top:1px solid var(--line);background:rgba(0,0,0,.2);}
+  .total{display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:19px;margin-bottom:16px;}
+  .total span:last-child{color:var(--gold);}
+  .checkout{
+    width:100%;background:#25d366;color:#fff;padding:15px;border-radius:12px;
+    font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center;gap:8px;
+    transition:.25s;
+  }
+  .checkout:hover{background:#1ebe5b;box-shadow:0 10px 26px rgba(37,211,102,.35);}
+
+  /* ============ MODAL ============ */
+  .modal{
+    position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);
+    z-index:995;display:none;align-items:center;justify-content:center;padding:20px;
+  }
+  .modal.open{display:flex;animation:fadeIn .25s;}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .modal-box{
+    background:var(--card); border:1px solid var(--line); border-radius:22px;
+    max-width:820px; width:100%; max-height:90vh; overflow:auto;
+    display:grid; grid-template-columns:1fr 1fr; animation:pop .3s;
+    position:relative;
+  }
+  @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+  .modal-img{
+    background:linear-gradient(135deg,#1a2035,#0f1420);
+    display:grid;place-items:center;font-size:130px;padding:40px;min-height:300px;
+    overflow:hidden;
+  }
+  .modal-img img{width:100%;height:100%;max-height:400px;object-fit:contain;}
+  .modal-info{padding:30px;display:flex;flex-direction:column;}
+  .modal-info .tag{
+    align-self:flex-start;font-size:12px;color:var(--gold);
+    background:rgba(251,191,36,.1);padding:5px 12px;border-radius:8px;
+    font-weight:700;margin-bottom:14px;
+  }
+  .modal-info h2{font-size:24px;font-weight:900;margin-bottom:14px;line-height:1.4;}
+  .modal-info .desc{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:20px;}
+  .modal-info .price{margin-bottom:22px;font-size:26px;font-weight:900;color:var(--gold);}
+  .modal-info .price small{color:var(--muted);font-size:15px;text-decoration:line-through;margin-right:8px;font-weight:400;}
+  .modal-close{
+    position:absolute;top:18px;left:18px;background:rgba(255,255,255,.08);
+    color:#fff;width:40px;height:40px;border-radius:12px;font-size:22px;
+    display:grid;place-items:center;z-index:2;
+  }
+  @media(max-width:700px){.modal-box{grid-template-columns:1fr;}}
+
+  /* ============ FLOATING WHATSAPP ============ */
+  .float-wa{
+    position:fixed;bottom:26px;left:26px;width:58px;height:58px;
+    background:#25d366;border-radius:50%;display:grid;place-items:center;
+    color:#fff;font-size:28px;z-index:800;
+    box-shadow:0 12px 30px rgba(37,211,102,.4);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 12px 30px rgba(37,211,102,.4),0 0 0 0 rgba(37,211,102,.5);}
+    50%{box-shadow:0 12px 30px rgba(37,211,102,.4),0 0 0 14px rgba(37,211,102,0);}
+  }
+
+  /* ============ TOAST ============ */
+  .toast{
+    position:fixed;bottom:26px;right:26px;background:var(--card);
+    border:1px solid var(--accent);padding:14px 20px;border-radius:14px;
+    color:#fff;font-weight:700;font-size:14px;z-index:1000;
+    transform:translateY(120px);opacity:0;transition:.35s;
+    box-shadow:0 12px 30px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px;
+  }
+  .toast.show{transform:translateY(0);opacity:1;}
+
+  /* ============ FOOTER ============ */
+  footer{
+    background:linear-gradient(135deg,#0d1220,#0a0e1a);color:var(--muted);
+    text-align:center;padding:50px 22px;margin-top:70px;border-top:1px solid var(--line);
+  }
+  .foot-logo{
+    font-size:26px;font-weight:900;letter-spacing:6px;margin-bottom:12px;
+    background:linear-gradient(90deg,var(--accent),var(--gold));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  footer a{color:var(--gold);}
+  .socials{margin-top:18px;display:flex;justify-content:center;gap:14px;}
+  .socials a{
+    width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.04);
+    border:1px solid var(--line);display:grid;place-items:center;font-size:18px;
+    transition:.25s;color:#fff;
+  }
+  .socials a:hover{background:var(--accent);transform:translateY(-3px);}
+
+  @media(max-width:600px){
+    .hero h1{font-size:28px;}
+    .hero{padding:50px 20px;}
+    .logo-text{font-size:18px;letter-spacing:2px;}
+    .float-wa{bottom:18px;left:18px;width:52px;height:52px;font-size:24px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">
+      <div class="logo-mark">R</div>
+      <div class="logo-text">ROBERTO</div>
+    </div>
+    <div class="search-wrap">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input class="search" id="search" type="text" placeholder="ابحث عن كيبورد، ماوس، حامل...">
+    </div>
+    <button class="icon-btn" onclick="toggleCart()" title="السلة">
+      🛒 <span class="badge" id="count">0</span>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">✦ ROBERTO PREMIUM ✦</div>
+    <h1>كل ما تحتاجه من <br>الكيبوردات والماوس والملحقات</h1>
+    <p>منتجات أصلية • ضمان حقيقي • شحن لكل محافظات مصر • دفع عند الاستلام</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">🛍️ تسوّق الآن</button>
+      <a class="btn-ghost" href="https://wa.me/201000000000" target="_blank">💬 تواصل معنا</a>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="num">+500</div><div class="lbl">عميل سعيد</div></div>
+  <div class="stat"><div class="num">+120</div><div class="lbl">منتج أصلي</div></div>
+  <div class="stat"><div class="num">24 ساعة</div><div class="lbl">شحن سريع</div></div>
+  <div class="stat"><div class="num">14 يوم</div><div class="lbl">استبدال مجاني</div></div>
+</div>
+
+<div class="cats" id="cats">
+  <button class="cat active" data-cat="all">الكل</button>
+  <button class="cat" data-cat="keyboard">كيبوردات</button>
+  <button class="cat" data-cat="mouse">ماوس</button>
+  <button class="cat" data-cat="stand">حوامل</button>
+  <button class="cat" data-cat="headset">سماعات</button>
+</div>
+
+<div class="section-head" id="products-head"><h2>منتجاتنا</h2></div>
+<div class="products" id="products"></div>
+
+<footer>
+  <div class="foot-logo">ROBERTO</div>
+  <p>جميع الحقوق محفوظة © ROBERTO 2026</p>
+  <div class="socials">
+    <a href="https://wa.me/201000000000" target="_blank" title="واتساب">💬</a>
+    <a href="#" target="_blank" title="انستجرام">📸</a>
+    <a href="#" target="_blank" title="فيسبوك">📘</a>
+    <a href="#" target="_blank" title="تيك توك">🎵</a>
+  </div>
+</footer>
+
+<!-- Cart -->
+<div class="overlay" id="overlay" onclick="toggleCart()"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h3>سلة <span>ROBERTO</span></h3>
+    <button class="close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="drawer-items" id="items"></div>
+  <div class="drawer-foot">
+    <div class="total"><span>الإجمالي</span><span id="total">0 ج.م</span></div>
+    <button class="checkout" onclick="checkout()">💬 إتمام الطلب عبر واتساب</button>
+  </div>
+</aside>
+
+<!-- Quick View Modal -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-img" id="m-img"></div>
+    <div class="modal-info">
+      <span class="tag" id="m-tag"></span>
+      <h2 id="m-name"></h2>
+      <p class="desc" id="m-desc"></p>
+      <div class="price" id="m-price"></div>
+      <button class="btn-primary" id="m-add">🛒 أضف للسلة</button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating WhatsApp -->
+<a class="float-wa" href="https://wa.me/201000000000" target="_blank" title="تواصل معنا">💬</a>
+
+<!-- Toast -->
+<div class="toast" id="toast">✓ <span id="toast-text"></span></div>
+
+<script>
+// ==================== تحميل المنتجات ====================
+// بيقرا من localStorage اللي بيتحط من admin.html
+// لو مفيش، يحمّل منتجات افتراضية
+
+let products = [];
+
+const DEFAULT_PRODUCTS = [
+  { id:1,  name:"كيبورد ميكانيكال Redragon K552", cat:"keyboard", price:1450, old:1700, img:null, desc:"كيبورد ميكانيكال بمفاتيح حمراء، إضاءة RGB، هيكل معدني متين، مثالي للألعاب والكتابة الطويلة." },
+  { id:2,  name:"كيبورد لاسلكي Logitech K380",      cat:"keyboard", price:950,  old:1100, img:null, desc:"كيبورد لاسلكي صغير يتصل بـ 3 أجهزة في نفس الوقت، بطارية تدوم سنتين." },
+  { id:3,  name:"كيبورد جيمنج RGB Meetion",          cat:"keyboard", price:620,  old:0,    img:null, desc:"كيبورد جيمنج اقتصادي بإضاءة RGB ملونة ومقاومة للماء." },
+  { id:4,  name:"ماوس لاسلكي Logitech M170",         cat:"mouse",    price:380,  old:450,  img:null, desc:"ماوس لاسلكي موثوق، تصميم مريح لليد، بطارية تدوم 12 شهر." },
+  { id:5,  name:"ماوس جيمنج 7200 DPI",               cat:"mouse",    price:550,  old:700,  img:null, desc:"ماوس جيمنج بدقة 7200 DPI، 7 أزرار قابلة للبرمجة، إضاءة RGB." },
+  { id:6,  name:"ماوس ريموت للعرض التقديمي",         cat:"mouse",    price:290,  old:0,    img:null, desc:"ريموت عرض تقديمي لاسلكي مع مؤشر ليزر، متوافق مع PowerPoint." },
+  { id:7,  name:"حامل لابتوب ألومنيوم",              cat:"stand",    price:420,  old:520,  img:null, desc:"حامل لابتوب من الألومنيوم، قابل للتعديل بـ 6 مستويات، بيحسن التهوية." },
+  { id:8,  name:"حامل موبايل قابل للتعديل",          cat:"stand",    price:150,  old:0,    img:null, desc:"حامل موبايل مكتبي قابل للتعديل، يدعم كل المقاسات." },
+  { id:9,  name:"حامل شاشة ذراع متحرك",              cat:"stand",    price:890,  old:1050, img:null, desc:"ذراع شاشة متحرك يدعم شاشات من 13 لـ 27 بوصة، حرية كاملة في التوجيه." },
+  { id:10, name:"سماعة جيمنج مع مايك",               cat:"headset",  price:780,  old:920,  img:null, desc:"سماعة جيمنج بجودة صوت محيطي، مايك عازل للضوضاء، إضاءة LED." },
+  { id:11, name:"سماعة بلوتوث للألعاب",              cat:"headset",  price:1150, old:0,    img:null, desc:"سماعة بلوتوث بجودة صوت عالية، تأخير منخفض، بطارية 30 ساعة." },
+  { id:12, name:"ماوس باد جيمنج كبير",               cat:"mouse",    price:180,  old:230,  img:null, desc:"ماوس باد كبير بمقاس 80×30 سم، سطح ناعم لحركة دقيقة." },
+];
+
+function loadProducts(){
+  const raw = localStorage.getItem('roberto_products');
+  if(raw){
+    try {
+      products = JSON.parse(raw);
+    } catch(e){
+      products = [...DEFAULT_PRODUCTS];
+    }
+  } else {
+    products = [...DEFAULT_PRODUCTS];
+  }
+}
+loadProducts();
+
+// ==================== السلة والمفضلة ====================
+let cart = JSON.parse(localStorage.getItem('roberto_cart') || '[]');
+let wishlist = JSON.parse(localStorage.getItem('roberto_wish') || '[]');
+let currentCat = "all";
+let currentSearch = "";
+
+const $ = id => document.getElementById(id);
+const catName = c => ({keyboard:"كيبورد", mouse:"ماوس", stand:"حامل", headset:"سماعة"}[c] || c);
+
+// ==================== العرض ====================
+function render(){
+  const box = $('products');
+  const list = products.filter(p =>
+    (currentCat==="all" || p.cat===currentCat) && p.name.includes(currentSearch)
+  );
+  box.innerHTML = list.map(p => `
+    <div class="card">
+      ${p.old ? `<span class="sale">خصم ${Math.round((1-p.price/p.old)*100)}%</span>` : ""}
+      <button class="wish ${wishlist.includes(p.id)?'on':''}" onclick="toggleWish(${p.id},event)">♥</button>
+      <div class="img">
+        ${p.img 
+          ? `<img src="${p.img}" alt="${p.name}">` 
+          : '📦'}
+      </div>
+      <div class="info">
+        <span class="tag">${catName(p.cat)}</span>
+        <h3>${p.name}</h3>
+        <div class="price">
+          <span class="now">${p.price} ج.م</span>
+          ${p.old ? `<span class="old">${p.old} ج.م</span>` : ""}
+        </div>
+        <div class="actions">
+          <button class="view" onclick="openModal(${p.id})" title="عرض سريع">👁</button>
+          <button class="add" onclick="addToCart(${p.id})">أضف للسلة</button>
+        </div>
+      </div>
+    </div>
+  `).join("") || `<p style="text-align:center;color:#94a3b8;grid-column:1/-1;padding:40px">لا توجد نتائج 🔍</p>`;
+  observeCards();
+}
+
+function observeCards(){
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){
+        setTimeout(()=>e.target.classList.add('show'), i*60);
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:.1});
+  document.querySelectorAll('.card').forEach(c=>obs.observe(c));
+}
+
+// ==================== المفضلة ====================
+function toggleWish(id,e){
+  e.stopPropagation();
+  const i = wishlist.indexOf(id);
+  if(i>-1) wishlist.splice(i,1); else wishlist.push(id);
+  localStorage.setItem('roberto_wish', JSON.stringify(wishlist));
+  e.target.classList.toggle('on');
+  showToast(i>-1 ? "اتشال من المفضلة" : "اتضاف للمفضلة ♥");
+}
+
+// ==================== السلة ====================
+function addToCart(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  const found = cart.find(x=>x.id===id);
+  if(found) found.qty++;
+  else cart.push({...p, qty:1});
+  saveCart();
+  updateCart();
+  showToast(`اتضاف: ${p.name}`);
+  if(!$('drawer').classList.contains('open')) toggleCart();
+}
+function changeQty(id,delta){
+  const item = cart.find(x=>x.id===id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty<=0) cart = cart.filter(x=>x.id!==id);
+  saveCart(); updateCart();
+}
+function removeItem(id){ cart = cart.filter(x=>x.id!==id); saveCart(); updateCart(); }
+function saveCart(){ localStorage.setItem('roberto_cart', JSON.stringify(cart)); }
+
+function updateCart(){
+  const totalQty = cart.reduce((s,i)=>s+i.qty,0);
+  const totalPrice = cart.reduce((s,i)=>s+i.qty*i.price,0);
+  $('count').textContent = totalQty;
+  $('total').textContent = totalPrice.toLocaleString('ar-EG') + " ج.م";
+  if(cart.length===0){
+    $('items').innerHTML = `<div class="empty">🛒 السلة فاضية<br><small style="color:#64748b;margin-top:8px;display:block">ابدأ التسوق وضيف منتجاتك المفضلة</small></div>`;
+    return;
+  }
+  $('items').innerHTML = cart.map(i=>`
+    <div class="item">
+      <div class="ico">
+        ${i.img ? `<img src="${i.img}" alt="${i.name}">` : '📦'}
+      </div>
+      <div class="details">
+        <h4>${i.name}</h4>
+        <div class="row">
+          <button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button>
+          <span style="color:#fff;font-weight:800;min-width:20px;text-align:center">${i.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${i.id},1)">+</button>
+          <span style="margin-right:auto;color:#fbbf24;font-weight:800">${(i.price*i.qty).toLocaleString('ar-EG')} ج.م</span>
+        </div>
+      </div>
+      <button class="remove" onclick="removeItem(${i.id})" title="حذف">🗑</button>
+    </div>
+  `).join("");
+}
+function toggleCart(){
+  $('drawer').classList.toggle('open');
+  $('overlay').classList.toggle('open');
+}
+
+// ==================== Quick View Modal ====================
+function openModal(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  $('m-img').innerHTML = p.img 
+    ? `<img src="${p.img}" alt="${p.name}">` 
+    : '📦';
+  $('m-tag').textContent = catName(p.cat);
+  $('m-name').textContent = p.name;
+  $('m-desc').textContent = p.desc || 'لا يوجد وصف لهذا المنتج.';
+  $('m-price').innerHTML = `${p.price} ج.م ${p.old ? `<small>${p.old} ج.م</small>` : ""}`;
+  $('m-add').onclick = ()=>{ addToCart(id); closeModal(); };
+  $('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+  $('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ==================== Toast ====================
+function showToast(msg){
+  $('toast-text').textContent = msg;
+  $('toast').classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(()=>$('toast').classList.remove('show'), 2200);
+}
+
+// ==================== إتمام الطلب ====================
+function checkout(){
+  if(cart.length===0){ showToast("السلة فاضية!"); return; }
+  const phone = "201000000000"; // ← غيّر الرقم ده لرقمك
+  let msg = "*طلب جديد من ROBERTO*%0A%0A";
+  cart.forEach(i=> msg += `• ${i.name} × ${i.qty} = ${(i.price*i.qty).toLocaleString('ar-EG')} ج.م%0A`);
+  const total = cart.reduce((s,i)=>s+i.qty*i.price,0);
+  msg += `%0A*الإجمالي: ${total.toLocaleString('ar-EG')} ج.م*`;
+  window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
+}
+
+// ==================== الفلاتر والبحث ====================
+document.querySelectorAll('.cat').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    currentCat = b.dataset.cat;
+    render();
+  };
+});
+$('search').oninput = e => { currentSearch = e.target.value.trim(); render(); };
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+// ==================== init ====================
+render();
+updateCart();
+
+// ==================== مزامنة تلقائية مع الأدمن ====================
+// لو حصل تعديل في تاب تاني (الأدمن مثلاً)، يحدّث المنتجات تلقائياً
+window.addEventListener('storage', e => {
+  if(e.key === 'roberto_products'){
+    loadProducts();
+    render();
+  }
+});
+</script>
+</body>
+</html>

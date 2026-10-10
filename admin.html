@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROBERTO | لوحة التحكم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e1a; --card:#151b2b; --line:rgba(255,255,255,.08);
+    --txt:#e5e7eb; --muted:#94a3b8;
+    --accent:#e11d48; --accent2:#f59e0b; --gold:#fbbf24;
+    --green:#10b981; --red:#ef4444;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+  body{
+    background:var(--bg);color:var(--txt);min-height:100vh;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(225,29,72,.12), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(245,158,11,.10), transparent 45%);
+  }
+  button{font-family:inherit;cursor:pointer;border:none;}
+  input,select,textarea{
+    font-family:inherit;width:100%;background:rgba(255,255,255,.04);
+    border:1px solid var(--line);border-radius:10px;padding:11px 14px;
+    color:#fff;font-size:14px;transition:.25s;
+  }
+  input:focus,select:focus,textarea:focus{
+    outline:none;border-color:var(--accent);background:rgba(225,29,72,.06);
+  }
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:600;}
+  .field{margin-bottom:16px;}
+
+  /* ============ LOGIN ============ */
+  .login-wrap{
+    min-height:100vh;display:grid;place-items:center;padding:20px;
+  }
+  .login-box{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:22px;padding:40px;max-width:420px;width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+  }
+  .login-logo{
+    font-size:26px;font-weight:900;letter-spacing:6px;text-align:center;margin-bottom:8px;
+    background:linear-gradient(90deg,var(--accent),var(--gold));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .login-sub{text-align:center;color:var(--muted);font-size:13px;margin-bottom:30px;}
+  .login-box button{
+    width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;padding:13px;border-radius:12px;font-weight:800;font-size:15px;
+    margin-top:10px;transition:.25s;
+  }
+  .login-box button:hover{filter:brightness(1.15);}
+
+  /* ============ DASHBOARD ============ */
+  .dash{display:none;max-width:1280px;margin:auto;padding:24px 20px;}
+  .dash.show{display:block;}
+
+  .top-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:26px;flex-wrap:wrap;gap:14px;
+  }
+  .top-logo{display:flex;align-items:center;gap:12px;}
+  .logo-mark{
+    width:42px;height:42px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:grid;place-items:center;font-weight:900;color:#fff;font-size:20px;
+    box-shadow:0 0 22px rgba(225,29,72,.5);
+  }
+  .top-logo h1{font-size:22px;font-weight:900;letter-spacing:2px;}
+  .top-logo p{font-size:12px;color:var(--muted);}
+  .top-actions{display:flex;gap:10px;flex-wrap:wrap;}
+  .btn{
+    padding:10px 18px;border-radius:10px;font-weight:700;font-size:13px;
+    transition:.25s;display:inline-flex;align-items:center;gap:6px;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;}
+  .btn-primary:hover{filter:brightness(1.15);}
+  .btn-ghost{background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--line);}
+  .btn-ghost:hover{background:rgba(255,255,255,.1);}
+  .btn-green{background:var(--green);color:#fff;}
+  .btn-green:hover{filter:brightness(1.1);}
+  .btn-red{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3);}
+  .btn-red:hover{background:var(--red);color:#fff;}
+
+  /* Stats */
+  .stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:14px;margin-bottom:26px;
+  }
+  .stat{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:18px 20px;transition:.25s;
+  }
+  .stat:hover{border-color:var(--accent);transform:translateY(-3px);}
+  .stat .num{
+    font-size:26px;font-weight:900;
+    background:linear-gradient(135deg,var(--accent),var(--gold));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .stat .lbl{color:var(--muted);font-size:13px;margin-top:4px;}
+
+  /* Layout */
+  .layout{display:grid;grid-template-columns:1fr 400px;gap:20px;align-items:start;}
+  @media(max-width:900px){.layout{grid-template-columns:1fr;}}
+
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:22px;margin-bottom:20px;
+  }
+  .panel h3{
+    font-size:17px;margin-bottom:18px;display:flex;align-items:center;gap:10px;
+  }
+  .panel h3::before{
+    content:'';width:4px;height:20px;border-radius:4px;
+    background:linear-gradient(var(--accent),var(--accent2));
+  }
+
+  /* Image upload */
+  .upload-box{
+    border:2px dashed var(--line);border-radius:14px;padding:26px;
+    text-align:center;cursor:pointer;transition:.25s;position:relative;
+    background:rgba(255,255,255,.02);
+  }
+  .upload-box:hover{border-color:var(--accent);background:rgba(225,29,72,.05);}
+  .upload-box.dragover{border-color:var(--accent);background:rgba(225,29,72,.1);}
+  .upload-box input{display:none;}
+  .upload-box .icon{font-size:38px;margin-bottom:8px;opacity:.7;}
+  .upload-box .txt{font-size:14px;font-weight:700;}
+  .upload-box .hint{font-size:12px;color:var(--muted);margin-top:4px;}
+
+  .preview-img{
+    width:100%;height:200px;border-radius:12px;object-fit:cover;
+    display:none;margin-bottom:12px;border:1px solid var(--line);
+  }
+  .preview-img.show{display:block;}
+
+  /* Product list */
+  .product-list{max-height:600px;overflow-y:auto;padding-left:6px;}
+  .product-list::-webkit-scrollbar{width:6px;}
+  .product-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:6px;}
+
+  .prod-item{
+    display:flex;gap:12px;padding:12px;border-radius:12px;
+    background:rgba(255,255,255,.03);border:1px solid var(--line);
+    margin-bottom:10px;align-items:center;transition:.25s;
+  }
+  .prod-item:hover{border-color:rgba(225,29,72,.4);}
+  .prod-item img,
+  .prod-item .placeholder{
+    width:56px;height:56px;border-radius:10px;object-fit:cover;
+    background:linear-gradient(135deg,#1a2035,#0f1420);
+    display:grid;place-items:center;font-size:24px;flex-shrink:0;
+  }
+  .prod-item .info{flex:1;min-width:0;}
+  .prod-item h4{font-size:14px;font-weight:700;margin-bottom:4px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .prod-item .meta{font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;}
+  .prod-item .meta span:last-child{color:var(--gold);font-weight:700;}
+  .prod-item .acts{display:flex;gap:6px;flex-shrink:0;}
+  .prod-item .acts button{
+    width:34px;height:34px;border-radius:8px;font-size:14px;
+    display:grid;place-items:center;transition:.2s;
+  }
+  .edit{background:rgba(245,158,11,.15);color:var(--gold);}
+  .edit:hover{background:var(--accent2);color:#fff;}
+  .del{background:rgba(239,68,68,.15);color:var(--red);}
+  .del:hover{background:var(--red);color:#fff;}
+
+  .empty-list{
+    text-align:center;padding:40px 20px;color:var(--muted);font-size:14px;
+  }
+
+  /* Toast */
+  .toast{
+    position:fixed;bottom:26px;left:50%;transform:translate(-50%,120px);
+    background:var(--card);border:1px solid var(--green);
+    padding:14px 24px;border-radius:12px;font-weight:700;font-size:14px;
+    z-index:9999;opacity:0;transition:.35s;
+    box-shadow:0 12px 30px rgba(0,0,0,.5);
+  }
+  .toast.show{transform:translate(-50%,0);opacity:1;}
+  .toast.error{border-color:var(--red);}
+
+  .search-admin{
+    margin-bottom:14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div class="login-logo">ROBERTO</div>
+    <p class="login-sub">لوحة تحكم الأدمن</p>
+    <div class="field">
+      <label>كلمة السر</label>
+      <input type="password" id="pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <button onclick="login()">دخول</button>
+    <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:16px">
+      كلمة السر الافتراضية: <strong style="color:var(--gold)">roberto2026</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div class="dash" id="dash">
+  <div class="top-bar">
+    <div class="top-logo">
+      <div class="logo-mark">R</div>
+      <div>
+        <h1>ROBERTO</h1>
+        <p>لوحة تحكم الأدمن</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a href="index.html" target="_blank" class="btn btn-ghost">👁 عرض المتجر</a>
+      <button class="btn btn-ghost" onclick="exportData()">⬇ تصدير</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">⬆ استيراد</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      <button class="btn btn-red" onclick="logout()">🚪 خروج</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num" id="s-total">0</div><div class="lbl">إجمالي المنتجات</div></div>
+    <div class="stat"><div class="num" id="s-keyboard">0</div><div class="lbl">كيبوردات</div></div>
+    <div class="stat"><div class="num" id="s-mouse">0</div><div class="lbl">ماوس</div></div>
+    <div class="stat"><div class="num" id="s-other">0</div><div class="lbl">حوامل وسماعات</div></div>
+  </div>
+
+  <div class="layout">
+
+    <!-- ===== ADD / EDIT FORM ===== -->
+    <div>
+      <div class="panel">
+        <h3 id="form-title">➕ إضافة منتج جديد</h3>
+
+        <div class="field">
+          <label>صورة المنتج</label>
+          <div class="upload-box" id="uploadBox">
+            <input type="file" id="imgInput" accept="image/*">
+            <div class="icon">📷</div>
+            <div class="txt">اضغط لاختيار صورة أو اسحبها هنا</div>
+            <div class="hint">PNG, JPG, WEBP — حتى 2 ميجا</div>
+          </div>
+          <img id="preview" class="preview-img" alt="">
+          <button class="btn btn-red" id="removeImg" style="display:none;margin-top:8px;width:100%" onclick="clearImage()">🗑 إزالة الصورة</button>
+        </div>
+
+        <div class="field">
+          <label>اسم المنتج *</label>
+          <input type="text" id="f-name" placeholder="مثال: كيبورد Redragon K552">
+        </div>
+
+        <div class="field">
+          <label>التصنيف *</label>
+          <select id="f-cat">
+            <option value="keyboard">كيبوردات</option>
+            <option value="mouse">ماوس</option>
+            <option value="stand">حوامل</option>
+            <option value="headset">سماعات</option>
+          </select>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field">
+            <label>السعر الحالي (ج.م) *</label>
+            <input type="number" id="f-price" placeholder="1450" min="0">
+          </div>
+          <div class="field">
+            <label>السعر قبل الخصم</label>
+            <input type="number" id="f-old" placeholder="1700" min="0">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>وصف المنتج</label>
+          <textarea id="f-desc" rows="3" placeholder="اكتب وصف مختصر وجذاب..."></textarea>
+        </div>
+
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="saveProduct()" id="saveBtn">
+            💾 حفظ المنتج
+          </button>
+          <button class="btn btn-ghost" id="cancelBtn" style="display:none" onclick="resetForm()">
+            ❌ إلغاء
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PRODUCTS LIST ===== -->
+    <div class="panel">
+      <h3>📦 المنتجات الحالية</h3>
+      <input type="text" class="search-admin" id="admin-search" placeholder="🔍 ابحث..." oninput="renderList()">
+      <div class="product-list" id="productList"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== الإعدادات ====================
+const ADMIN_PASS = "roberto2026";        // ← غيّر كلمة السر هنا
+const STORAGE_KEY = "roberto_products";
+
+// ==================== الحالة ====================
+let products = [];
+let editingId = null;
+let currentImage = null;   // base64
+
+// ==================== تسجيل الدخول ====================
+function login(){
+  const val = document.getElementById('pass').value;
+  if(val === ADMIN_PASS){
+    sessionStorage.setItem('roberto_auth', '1');
+    showDash();
+  } else {
+    toast("كلمة السر غلط ❌", true);
+  }
+}
+function logout(){
+  sessionStorage.removeItem('roberto_auth');
+  location.reload();
+}
+function showDash(){
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('dash').classList.add('show');
+  loadProducts();
+  renderList();
+  updateStats();
+}
+
+// ==================== التخزين ====================
+function loadProducts(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    products = JSON.parse(raw);
+  } else {
+    // منتجات افتراضية أول مرة
+    products = [
+      { id:1, name:"كيبورد ميكانيكال Redragon K552", cat:"keyboard", price:1450, old:1700, desc:"كيبورد ميكانيكال بمفاتيح حمراء وإضاءة RGB", img:null },
+      { id:2, name:"ماوس لاسلكي Logitech M170", cat:"mouse", price:380, old:450, desc:"ماوس لاسلكي موثوق وبطارية 12 شهر", img:null },
+    ];
+    save();
+  }
+}
+function save(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+}
+
+// ==================== رفع الصور ====================
+const uploadBox = document.getElementById('uploadBox');
+const imgInput = document.getElementById('imgInput');
+
+uploadBox.onclick = ()=> imgInput.click();
+imgInput.onchange = e => handleFile(e.target.files[0]);
+
+// Drag & drop
+['dragenter','dragover'].forEach(ev=>{
+  uploadBox.addEventListener(ev, e=>{
+    e.preventDefault(); uploadBox.classList.add('dragover');
+  });
+});
+['dragleave','drop'].forEach(ev=>{
+  uploadBox.addEventListener(ev, e=>{
+    e.preventDefault(); uploadBox.classList.remove('dragover');
+  });
+});
+uploadBox.addEventListener('drop', e=>{
+  const file = e.dataTransfer.files[0];
+  if(file) handleFile(file);
+});
+
+function handleFile(file){
+  if(!file) return;
+  if(!file.type.startsWith('image/')){ toast("الملف مش صورة ❌", true); return; }
+  if(file.size > 2*1024*1024){ toast("الصورة أكبر من 2 ميجا ❌", true); return; }
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    // ضغط الصورة لو كبيرة (تحسين الأداء)
+    compressImage(e.target.result, 800, 0.8, dataUrl=>{
+      currentImage = dataUrl;
+      showPreview(dataUrl);
+    });
+  };
+  reader.readAsDataURL(file);
+}
+
+function compressImage(src, maxSize, quality, cb){
+  const img = new Image();
+  img.onload = ()=>{
+    let {width, height} = img;
+    if(width > height && width > maxSize){
+      height = Math.round(height * maxSize / width);
+      width = maxSize;
+    } else if(height > maxSize){
+      width = Math.round(width * maxSize / height);
+      height = maxSize;
+    }
+    const cvs = document.createElement('canvas');
+    cvs.width = width; cvs.height = height;
+    const ctx = cvs.getContext('2d');
+    ctx.drawImage(img, 0, 0, width, height);
+    cb(cvs.toDataURL('image/jpeg', quality));
+  };
+  img.src = src;
+}
+
+function showPreview(src){
+  const p = document.getElementById('preview');
+  p.src = src;
+  p.classList.add('show');
+  document.getElementById('removeImg').style.display = 'block';
+  uploadBox.style.display = 'none';
+}
+function clearImage(){
+  currentImage = null;
+  document.getElementById('preview').classList.remove('show');
+  document.getElementById('removeImg').style.display = 'none';
+  uploadBox.style.display = 'block';
+  imgInput.value = '';
+}
+
+// ==================== حفظ المنتج ====================
+function saveProduct(){
+  const name = document.getElementById('f-name').value.trim();
+  const price = parseFloat(document.getElementById('f-price').value);
+  const old = parseFloat(document.getElementById('f-old').value) || 0;
+
+  if(!name){ toast("اكتب اسم المنتج ❌", true); return; }
+  if(!price || price <= 0){ toast("اكتب سعر صحيح ❌", true); return; }
+
+  const data = {
+    name,
+    cat: document.getElementById('f-cat').value,
+    price,
+    old,
+    desc: document.getElementById('f-desc').value.trim(),
+    img: currentImage,
+  };
+
+  if(editingId){
+    const idx = products.findIndex(p=>p.id===editingId);
+    products[idx] = { ...products[idx], ...data };
+    toast("تم تحديث المنتج ✅");
+  } else {
+    products.push({ id: Date.now(), ...data });
+    toast("تم إضافة المنتج ✅");
+  }
+
+  save();
+  resetForm();
+  renderList();
+  updateStats();
+}
+
+function editProduct(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  editingId = id;
+  document.getElementById('f-name').value = p.name;
+  document.getElementById('f-cat').value = p.cat;
+  document.getElementById('f-price').value = p.price;
+  document.getElementById('f-old').value = p.old || '';
+  document.getElementById('f-desc').value = p.desc || '';
+  document.getElementById('form-title').textContent = "✏️ تعديل المنتج";
+  document.getElementById('saveBtn').textContent = "💾 حفظ التعديلات";
+  document.getElementById('cancelBtn').style.display = 'block';
+
+  if(p.img){
+    currentImage = p.img;
+    showPreview(p.img);
+  } else {
+    clearImage();
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteProduct(id){
+  if(!confirm("متأكد إنك عايز تحذف المنتج؟")) return;
+  products = products.filter(x=>x.id!==id);
+  save();
+  renderList();
+  updateStats();
+  toast("تم حذف المنتج 🗑");
+}
+
+function resetForm(){
+  editingId = null;
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-cat').value = 'keyboard';
+  document.getElementById('f-price').value = '';
+  document.getElementById('f-old').value = '';
+  document.getElementById('f-desc').value = '';
+  document.getElementById('form-title').textContent = "➕ إضافة منتج جديد";
+  document.getElementById('saveBtn').textContent = "💾 حفظ المنتج";
+  document.getElementById('cancelBtn').style.display = 'none';
+  clearImage();
+}
+
+// ==================== القائمة ====================
+function renderList(){
+  const q = document.getElementById('admin-search').value.trim();
+  const list = products.filter(p => p.name.includes(q));
+  const box = document.getElementById('productList');
+
+  if(list.length === 0){
+    box.innerHTML = `<div class="empty-list">لا توجد منتجات بعد<br><small>ابدأ بإضافة منتج من الفورم ⬅</small></div>`;
+    return;
+  }
+
+  const catName = c => ({keyboard:"كيبورد", mouse:"ماوس", stand:"حامل", headset:"سماعة"}[c] || c);
+
+  box.innerHTML = list.map(p=>`
+    <div class="prod-item">
+      ${p.img 
+        ? `<img src="${p.img}" alt="${p.name}">` 
+        : `<div class="placeholder">📦</div>`}
+      <div class="info">
+        <h4>${p.name}</h4>
+        <div class="meta">
+          <span>${catName(p.cat)}</span>
+          <span>${p.price} ج.م</span>
+        </div>
+      </div>
+      <div class="acts">
+        <button class="edit" onclick="editProduct(${p.id})" title="تعديل">✏️</button>
+        <button class="del" onclick="deleteProduct(${p.id})" title="حذف">🗑</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function updateStats(){
+  document.getElementById('s-total').textContent = products.length;
+  document.getElementById('s-keyboard').textContent = products.filter(p=>p.cat==='keyboard').length;
+  document.getElementById('s-mouse').textContent = products.filter(p=>p.cat==='mouse').length;
+  document.getElementById('s-other').textContent = products.filter(p=>p.cat==='stand'||p.cat==='headset').length;
+}
+
+// ==================== تصدير / استيراد ====================
+function exportData(){
+  const data = JSON.stringify(products, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `roberto-products-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("تم تصدير المنتجات ✅");
+}
+
+function importData(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if(!Array.isArray(data)) throw new Error();
+      if(!confirm(`هيتم استبدال ${products.length} منتج بـ ${data.length} منتج. متأكد؟`)) return;
+      products = data;
+      save();
+      renderList();
+      updateStats();
+      toast("تم استيراد المنتجات ✅");
+    } catch {
+      toast("الملف غير صالح ❌", true);
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ==================== Toast ====================
+function toast(msg, isError){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.toggle('error', !!isError);
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+// ==================== init ====================
+if(sessionStorage.getItem('roberto_auth') === '1'){
+  showDash();
+}
+</script>
+</body>
+</html>
