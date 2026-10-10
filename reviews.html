@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>reviews.js | ROBERTO.exe</title>
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--line:#30363d;--txt:#c9d1d9;--muted:#8b949e;--green:#3fb950;--green-bright:#56d364;--blue:#58a6ff;--cyan:#79c0ff;--yellow:#d29922;--orange:#ffa657;--purple:#bc8cff;--pink:#ff7b72;--red:#f85149;--gold:#d4af37;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--txt);line-height:1.6;font-size:14px;min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+input,textarea,select{font-family:inherit;}
+.kw{color:var(--purple);}.str{color:var(--green);}.num{color:var(--orange);}.fn{color:var(--yellow);}.cmt{color:#6e7681;font-style:italic;}.var{color:var(--cyan);}.punc{color:#8b949e;}.key{color:var(--cyan);}
+
+.top-bar{position:sticky;top:0;z-index:100;background:var(--bg3);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;font-size:12px;flex-wrap:wrap;gap:10px;}
+.top-bar .logo{color:var(--gold);font-weight:800;font-size:14px;}
+.top-bar .logo::before{content:'~/';color:var(--green);}
+.top-bar .logo::after{content:'.exe';color:var(--muted);font-weight:400;font-size:11px;}
+.back-link{padding:6px 14px;background:var(--bg2);border:1px solid var(--line);border-radius:5px;color:var(--muted);font-size:11px;transition:.2s;}
+.back-link:hover{border-color:var(--green);color:var(--green);}
+
+.container{max-width:900px;margin:0 auto;padding:24px 16px;}
+.header-block{text-align:center;margin-bottom:36px;}
+.header-block .cmt{font-size:12px;color:#6e7681;margin-bottom:8px;}
+.header-block h1{font-size:clamp(22px,5vw,36px);font-weight:800;background:linear-gradient(90deg,var(--gold),var(--orange),var(--gold));background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 4s linear infinite;margin-bottom:12px;}
+@keyframes shine{to{background-position:200% auto;}}
+.header-block p{color:var(--muted);font-size:13px;}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:32px;}
+.stat{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:16px;text-align:center;}
+.stat .num{font-size:24px;font-weight:800;color:var(--gold);display:block;}
+.stat .lbl{color:var(--muted);font-size:11px;margin-top:4px;}
+
+.add-review-box{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:20px;margin-bottom:30px;}
+.add-review-box h3{color:var(--cyan);font-size:14px;margin-bottom:16px;font-weight:700;}
+.add-review-box h3::before{content:'// ';color:#6e7681;font-style:italic;font-weight:400;}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:11px;color:var(--cyan);margin-bottom:6px;font-weight:600;}
+.field label::before{content:'// ';color:#6e7681;font-style:italic;font-weight:400;}
+.field input,.field textarea,.field select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 14px;color:var(--txt);font-size:12.5px;transition:.2s;}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(63,185,80,.15);}
+.field textarea{resize:vertical;min-height:80px;font-family:inherit;}
+.stars-picker{display:flex;gap:6px;font-size:24px;cursor:pointer;color:#4b5563;}
+.stars-picker span{transition:.2s;}
+.stars-picker span.active{color:var(--gold);}
+.submit-btn{width:100%;background:var(--green);color:var(--bg);padding:12px;border-radius:6px;font-weight:700;font-size:12.5px;transition:.2s;margin-top:8px;}
+.submit-btn:hover{background:var(--green-bright);box-shadow:0 0 18px rgba(63,185,80,.4);}
+.submit-btn::before{content:'$ ';opacity:.6;}
+
+.reviews-list{display:flex;flex-direction:column;gap:14px;}
+.review-card{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:18px;transition:.2s;}
+.review-card:hover{border-color:var(--purple);}
+.review-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.review-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--cyan));display:grid;place-items:center;font-weight:800;color:var(--bg);font-size:16px;flex-shrink:0;}
+.review-meta{flex:1;}
+.review-name{font-weight:700;color:var(--yellow);font-size:13px;}
+.review-info{color:var(--muted);font-size:11px;margin-top:2px;}
+.review-body{font-size:12.5px;line-height:1.9;color:var(--txt);}
+.review-body::before{content:'"';color:var(--green);font-size:20px;font-weight:800;}
+.review-body::after{content:'"';color:var(--green);font-size:20px;font-weight:800;}
+.review-stars{color:var(--gold);font-size:14px;letter-spacing:2px;margin-top:10px;}
+
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);font-size:13px;}
+.empty-state::before{content:'// ';color:#6e7681;font-style:italic;}
+
+.foot-links{display:flex;justify-content:center;gap:16px;margin-top:40px;padding-top:24px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);flex-wrap:wrap;}
+.foot-links a{transition:.2s;}
+.foot-links a:hover{color:var(--green);}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--green);border-radius:8px;padding:14px 20px;color:var(--green);font-size:12px;z-index:999;transform:translateY(120px);opacity:0;transition:.4s;box-shadow:0 15px 40px rgba(0,0,0,.6);}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast::before{content:'✓ ';font-weight:800;}
+
+@media(max-width:600px){
+  .container{padding:16px 12px;}
+  .header-block h1{font-size:24px;}
+  .stat .num{font-size:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="logo">roberto</div>
+  <a href="index.html" class="back-link">← index.js</a>
+</div>
+
+<div class="container">
+  <div class="header-block">
+    <div class="cmt">// === CUSTOMER REVIEWS ===</div>
+    <h1>آراء عملائنا</h1>
+    <p>آلاف العملاء وثقوا فينا — دي بعض تجاربهم الحقيقية</p>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="add-review-box">
+    <h3>أضف تقييمك</h3>
+    <div class="field">
+      <label>اسمك</label>
+      <input type="text" id="r-name" placeholder="مثال: أحمد محمد">
+    </div>
+    <div class="field">
+      <label>المدينة</label>
+      <input type="text" id="r-city" placeholder="مثال: القاهرة">
+    </div>
+    <div class="field">
+      <label>التقييم</label>
+      <div class="stars-picker" id="stars-picker">
+        <span data-star="1">★</span>
+        <span data-star="2">★</span>
+        <span data-star="3">★</span>
+        <span data-star="4">★</span>
+        <span data-star="5">★</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>تجربتك معنا</label>
+      <textarea id="r-text" placeholder="اكتب تجربتك بالتفصيل..."></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitReview()">submit.review()</button>
+  </div>
+
+  <div class="reviews-list" id="reviews-list"></div>
+
+  <div class="foot-links">
+    <a href="index.html">الرئيسية</a>
+    <a href="support.html">الدعم</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toast-text"></span></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// ==================== REVIEWS DATA ====================
+const DEFAULT_REVIEWS = [
+  { id:1, name:'محمد عبد الله', city:'القاهرة', rating:5, date:'2026-10-01', text:'الكيبورد وصل بسرعة والجودة أحسن من المتوقع. خدمة العملاء ردت عليّ في دقائق. تجربة ممتازة فعلًا.' },
+  { id:2, name:'سارة محمود', city:'الإسكندرية', rating:5, date:'2026-09-28', text:'طلبت ماوس جيمنج وكان أصلي بضمان. اتبعتلي معاه هدية كمان! تعامل محترم جدًا وهطلب تاني أكيد.' },
+  { id:3, name:'كريم حسن', city:'المنصورة', rating:5, date:'2026-09-25', text:'أحسن أسعار لقيتها في مصر. دعم فني محترم ساعدوني أختار الكيبورد المناسب ليّ. أنصح بيهم.' },
+  { id:4, name:'نور إبراهيم', city:'طنطا', rating:5, date:'2026-09-20', text:'بشتري منهم من سنة والمنتجات دايماً أصلية. الشحن سريع والتعامل راقي. تجربة تستاهل 5 نجوم.' },
+  { id:5, name:'عمر السيد', city:'أسيوط', rating:4, date:'2026-09-15', text:'المنتج ممتاز بس الشحن اتأخر يوم عن الميعاد. بس الجودة تعوض.' }
+];
+
+let reviews = JSON.parse(localStorage.getItem('roberto_reviews') || '[]');
+if(reviews.length === 0){
+  reviews = [...DEFAULT_REVIEWS];
+  localStorage.setItem('roberto_reviews', JSON.stringify(reviews));
+}
+
+let selectedStars = 5;
+const starsPicker = $('stars-picker');
+if(starsPicker){
+  starsPicker.querySelectorAll('span').forEach(s => {
+    s.onclick = () => {
+      selectedStars = parseInt(s.dataset.star);
+      updateStars();
+    };
+  });
+  updateStars();
+}
+function updateStars(){
+  if(!starsPicker) return;
+  starsPicker.querySelectorAll('span').forEach(s => {
+    s.classList.toggle('active', parseInt(s.dataset.star) <= selectedStars);
+  });
+}
+
+function render(){
+  // Stats
+  const total = reviews.length;
+  const avg = reviews.reduce((s, r) => s + r.rating, 0) / total;
+  const fiveStars = reviews.filter(r => r.rating === 5).length;
+  $('stats').innerHTML = `
+    <div class="stat"><span class="num">${total}</span><span class="lbl">إجمالي التقييمات</span></div>
+    <div class="stat"><span class="num">${avg.toFixed(1)}</span><span class="lbl">متوسط التقييم</span></div>
+    <div class="stat"><span class="num">${fiveStars}</span><span class="lbl">تقييم 5 نجوم</span></div>
+    <div class="stat"><span class="num">99%</span><span class="lbl">نسبة الرضا</span></div>
+  `;
+
+  // Reviews list
+  const list = $('reviews-list');
+  if(reviews.length === 0){
+    list.innerHTML = `<div class="empty-state">مفيش تقييمات لسه — كن أول واحد!</div>`;
+    return;
+  }
+  list.innerHTML = reviews.map(r => `
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-avatar">${r.name.charAt(0)}</div>
+        <div class="review-meta">
+          <div class="review-name">${r.name}</div>
+          <div class="review-info">${r.city} · ${formatDate(r.date)}</div>
+        </div>
+      </div>
+      <div class="review-body">${r.text}</div>
+      <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+    </div>
+  `).join("");
+}
+
+function formatDate(d){
+  try {
+    const date = new Date(d);
+    return date.toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
+  } catch { return d; }
+}
+
+function submitReview(){
+  const name = $('r-name').value.trim();
+  const city = $('r-city').value.trim();
+  const text = $('r-text').value.trim();
+
+  if(!name){ showToast('اكتب اسمك'); return; }
+  if(!city){ showToast('اكتب مدينتك'); return; }
+  if(!text || text.length < 10){ showToast('اكتب تجربة حقيقية (10 أحرف على الأقل)'); return; }
+
+  const review = {
+    id: Date.now(),
+    name, city, text,
+    rating: selectedStars,
+    date: new Date().toISOString().slice(0, 10)
+  };
+
+  reviews.unshift(review);
+  localStorage.setItem('roberto_reviews', JSON.stringify(reviews));
+
+  $('r-name').value = '';
+  $('r-city').value = '';
+  $('r-text').value = '';
+  selectedStars = 5;
+  updateStars();
+
+  render();
+  showToast('تم إضافة تقييمك — شكراً!');
+}
+
+function showToast(msg){
+  $('toast-text').textContent = msg;
+  $('toast').classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => $('toast').classList.remove('show'), 2400);
+}
+
+render();
+</script>
+</body>
+</html>

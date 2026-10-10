@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>support.js | ROBERTO.exe</title>
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--line:#30363d;--txt:#c9d1d9;--muted:#8b949e;--green:#3fb950;--green-bright:#56d364;--blue:#58a6ff;--cyan:#79c0ff;--yellow:#d29922;--orange:#ffa657;--purple:#bc8cff;--red:#f85149;--gold:#d4af37;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--txt);line-height:1.6;font-size:14px;min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+input,textarea{font-family:inherit;}
+.cmt{color:#6e7681;font-style:italic;}
+.kw{color:var(--purple);}
+.str{color:var(--green);}
+
+.top-bar{position:sticky;top:0;z-index:100;background:var(--bg3);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;font-size:12px;flex-wrap:wrap;gap:10px;}
+.top-bar .logo{color:var(--gold);font-weight:800;font-size:14px;}
+.top-bar .logo::before{content:'~/';color:var(--green);}
+.top-bar .logo::after{content:'.exe';color:var(--muted);font-weight:400;font-size:11px;}
+.back-link{padding:6px 14px;background:var(--bg2);border:1px solid var(--line);border-radius:5px;color:var(--muted);font-size:11px;transition:.2s;}
+.back-link:hover{border-color:var(--green);color:var(--green);}
+
+.container{max-width:900px;margin:0 auto;padding:24px 16px;}
+
+.hero-block{text-align:center;margin-bottom:36px;padding:30px 20px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;position:relative;overflow:hidden;}
+.hero-block::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--cyan),var(--gold));}
+.hero-block .cmt{font-size:12px;margin-bottom:8px;}
+.hero-block h1{font-size:clamp(22px,5vw,32px);font-weight:800;color:var(--green);margin-bottom:12px;}
+.hero-block h1::before{content:'$ ';opacity:.6;}
+.hero-block p{color:var(--muted);font-size:13px;}
+
+.channels{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:36px;}
+.channel{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:22px;text-align:center;transition:.25s;cursor:pointer;position:relative;overflow:hidden;}
+.channel:hover{transform:translateY(-4px);box-shadow:0 15px 35px rgba(0,0,0,.4);}
+.channel .icon{font-size:38px;margin-bottom:12px;display:block;}
+.channel .name{font-size:14px;font-weight:800;color:var(--txt);margin-bottom:6px;}
+.channel .desc{font-size:11.5px;color:var(--muted);margin-bottom:12px;line-height:1.6;}
+.channel .cta{display:inline-block;padding:6px 14px;border-radius:5px;font-size:11px;font-weight:700;transition:.2s;}
+.channel:hover .cta{transform:scale(1.05);}
+.channel.wa{border-color:rgba(37,211,102,.3);}
+.channel.wa:hover{border-color:#25d366;box-shadow:0 15px 35px rgba(37,211,102,.25);}
+.channel.wa .icon{color:#25d366;}
+.channel.wa .cta{background:#25d366;color:#fff;}
+.channel.ig{border-color:rgba(225,48,108,.3);}
+.channel.ig:hover{border-color:#e1306c;box-shadow:0 15px 35px rgba(225,48,108,.25);}
+.channel.ig .icon{color:#e1306c;}
+.channel.ig .cta{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;}
+.channel.tt{border-color:rgba(255,255,255,.2);}
+.channel.tt:hover{border-color:#000;box-shadow:0 15px 35px rgba(255,255,255,.1);}
+.channel.tt .icon{color:#fff;}
+.channel.tt .cta{background:#000;color:#fff;border:1px solid #fff;}
+.channel.fb{border-color:rgba(24,119,242,.3);}
+.channel.fb:hover{border-color:#1877f2;box-shadow:0 15px 35px rgba(24,119,242,.25);}
+.channel.fb .icon{color:#1877f2;}
+.channel.fb .cta{background:#1877f2;color:#fff;}
+
+.section-head{display:flex;align-items:center;gap:10px;margin:36px 0 16px;}
+.section-head .cmt{font-size:12px;}
+.section-head h2{font-size:20px;font-weight:700;color:var(--txt);}
+.section-head h2::before{content:'function ';color:var(--purple);font-weight:400;}
+.section-head h2::after{content:'()';color:var(--pink);font-weight:400;}
+
+.faq{display:flex;flex-direction:column;gap:10px;}
+.faq-item{background:var(--bg2);border:1px solid var(--line);border-radius:8px;overflow:hidden;transition:.2s;}
+.faq-item:hover{border-color:var(--green);}
+.faq-q{padding:16px 20px;font-size:13px;font-weight:700;color:var(--cyan);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.faq-q::before{content:'Q: ';color:var(--green);}
+.faq-q .arrow{color:var(--muted);transition:.3s;font-size:14px;}
+.faq-item.open .arrow{transform:rotate(180deg);color:var(--green);}
+.faq-a{max-height:0;overflow:hidden;transition:.3s;padding:0 20px;color:var(--muted);font-size:12.5px;line-height:1.9;}
+.faq-item.open .faq-a{max-height:400px;padding:0 20px 18px;}
+.faq-a::before{content:'A: ';color:var(--green);font-weight:700;}
+
+.contact-box{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:24px;margin-top:20px;}
+.contact-box h3{color:var(--cyan);font-size:14px;margin-bottom:16px;}
+.contact-box h3::before{content:'// ';color:#6e7681;font-style:italic;font-weight:400;}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:11px;color:var(--cyan);margin-bottom:6px;font-weight:600;}
+.field label::before{content:'// ';color:#6e7681;font-style:italic;font-weight:400;}
+.field input,.field textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 14px;color:var(--txt);font-size:12.5px;transition:.2s;}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(63,185,80,.15);}
+.field textarea{resize:vertical;min-height:100px;font-family:inherit;}
+.send-btn{width:100%;background:#25d366;color:#fff;padding:13px;border-radius:6px;font-weight:700;font-size:12.5px;transition:.2s;}
+.send-btn:hover{background:#1ebe5b;box-shadow:0 0 20px rgba(37,211,102,.4);}
+.send-btn::before{content:'$ ';opacity:.6;}
+
+.hours{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:18px;margin-top:20px;font-size:12.5px;}
+.hours h3{color:var(--gold);font-size:13px;margin-bottom:12px;}
+.hours h3::before{content:'⏰ ';}
+.hours .line{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);}
+.hours .line:last-child{border-bottom:none;}
+.hours .line span:last-child{color:var(--green);font-weight:700;}
+
+.foot-links{display:flex;justify-content:center;gap:16px;margin-top:40px;padding-top:24px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);flex-wrap:wrap;}
+.foot-links a{transition:.2s;}
+.foot-links a:hover{color:var(--green);}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--green);border-radius:8px;padding:14px 20px;color:var(--green);font-size:12px;z-index:999;transform:translateY(120px);opacity:0;transition:.4s;box-shadow:0 15px 40px rgba(0,0,0,.6);}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast::before{content:'✓ ';font-weight:800;}
+
+@media(max-width:600px){
+  .container{padding:16px 12px;}
+  .channels{grid-template-columns:1fr;}
+  .hero-block{padding:24px 16px;}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="logo">roberto</div>
+  <a href="index.html" class="back-link">← index.js</a>
+</div>
+
+<div class="container">
+  <div class="hero-block">
+    <div class="cmt">// === CUSTOMER SUPPORT ===</div>
+    <h1>الدعم الفني</h1>
+    <p>فريقنا جاهز لمساعدتك في أي وقت — اختار القناة اللي تريحك</p>
+  </div>
+
+  <div class="channels">
+    <a href="https://wa.me/201000000000?text=مرحباً، أحتاج مساعدة بخصوص" target="_blank" class="channel wa">
+      <span class="icon">💬</span>
+      <div class="name">WhatsApp</div>
+      <div class="desc">رد فوري خلال دقائق</div>
+      <span class="cta">ابدأ المحادثة →</span>
+    </a>
+    <a href="https://instagram.com/roberto" target="_blank" class="channel ig">
+      <span class="icon">📸</span>
+      <div class="name">Instagram</div>
+      <div class="desc">شوف منتجاتنا الجديدة</div>
+      <span class="cta">تابعنا →</span>
+    </a>
+    <a href="https://tiktok.com/@roberto" target="_blank" class="channel tt">
+      <span class="icon">🎵</span>
+      <div class="name">TikTok</div>
+      <div class="desc">فيديوهات المنتجات والعروض</div>
+      <span class="cta">شاهد →</span>
+    </a>
+    <a href="https://facebook.com/roberto" target="_blank" class="channel fb">
+      <span class="icon">📘</span>
+      <div class="name">Facebook</div>
+      <div class="desc">صفحتنا الرسمية</div>
+      <span class="cta">زرنا →</span>
+    </a>
+  </div>
+
+  <div class="section-head"><h2>الأسئلة الشائعة</h2></div>
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">إزاي أطلب من الموقع؟<span class="arrow">▼</span></div>
+      <div class="faq-a">ضيف المنتجات اللي عايزها للسلة، وبعدين اضغط زر checkout واملا البيانات (الاسم، الموبايل، العنوان، طريقة الدفع). هنستلم طلبك فوراً وهنتواصل معاك للتأكيد.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">الشحن بياخد قد إيه؟<span class="arrow">▼</span></div>
+      <div class="faq-a">الشحن بياخد من 1 لـ 3 أيام عمل حسب المحافظة. القاهرة والجيزة عادة في يوم واحد. الشحن مجاني للطلبات فوق 500 جنيه.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">في ضمان على المنتجات؟<span class="arrow">▼</span></div>
+      <div class="faq-a">أيوه، كل المنتجات ليها ضمان حقيقي. الضمان سنة كاملة على الإلكترونيات، و14 يوم استبدال لأي منتج في حالة وجود عيب صناعة.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">إيه طرق الدفع المتاحة؟<span class="arrow">▼</span></div>
+      <div class="faq-a">بنقبل: الدفع عند الاستلام، InstaPay، Vodafone Cash، والبطاقات البنكية (Visa/Mastercard).</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">ينفع أستبدل أو أرجّع منتج؟<span class="arrow">▼</span></div>
+      <div class="faq-a">أيوه، خلال 14 يوم من استلام الطلب. المنتج لازم يكون بحالته الأصلية وبكل ملحقاته. تكلفة الشحن على العميل في حالة الإرجاع بدون عيب.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">إزاي أتابع طلبي؟<span class="arrow">▼</span></div>
+      <div class="faq-a">بعد تأكيد الطلب، هتستلم رسالة SMS فيها رقم تتبع. تقدر تتواصل مع شركة الشحن مباشرة أو تكلمنا على WhatsApp.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">عندكم فروع فيزيكال؟<span class="arrow">▼</span></div>
+      <div class="faq-a">حالياً بنعمل Online فقط، لكن قريباً هنفتح فرع في القاهرة. تابعنا على السوشيال ميديا لأي تحديثات.</div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>راسلنا مباشرة</h2></div>
+  <div class="contact-box">
+    <h3>ابعتلنا رسالة</h3>
+    <div class="field">
+      <label>اسمك</label>
+      <input type="text" id="c-name" placeholder="اسمك">
+    </div>
+    <div class="field">
+      <label>رقم الموبايل</label>
+      <input type="tel" id="c-phone" placeholder="01xxxxxxxxx">
+    </div>
+    <div class="field">
+      <label>رسالتك</label>
+      <textarea id="c-msg" placeholder="اكتب استفسارك بالتفصيل..."></textarea>
+    </div>
+    <button class="send-btn" onclick="sendMsg()">send.whatsapp()</button>
+  </div>
+
+  <div class="hours">
+    <h3>ساعات العمل</h3>
+    <div class="line"><span>السبت - الخميس</span><span>10 ص - 10 م</span></div>
+    <div class="line"><span>الجمعة</span><span>2 م - 10 م</span></div>
+    <div class="line"><span>الدعم على WhatsApp</span><span>24/7</span></div>
+  </div>
+
+  <div class="foot-links">
+    <a href="index.html">الرئيسية</a>
+    <a href="reviews.html">التقييمات</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toast-text"></span></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function toggleFaq(el){
+  const item = el.parentElement;
+  document.querySelectorAll('.faq-item').forEach(f => {
+    if(f !== item) f.classList.remove('open');
+  });
+  item.classList.toggle('open');
+}
+
+function sendMsg(){
+  const name = $('c-name').value.trim();
+  const phone = $('c-phone').value.trim();
+  const msg = $('c-msg').value.trim();
+
+  if(!name){ showToast('اكتب اسمك'); return; }
+  if(!phone || phone.length < 11){ showToast('رقم موبايل غير صحيح'); return; }
+  if(!msg || msg.length < 5){ showToast('اكتب رسالتك'); return; }
+
+  const text = `مرحباً ROBERTO!%0A%0A*الاسم:* ${name}%0A*الموبايل:* ${phone}%0A*الرسالة:* ${msg}`;
+  window.open(`https://wa.me/201000000000?text=${text}`, '_blank');
+}
+
+function showToast(msg){
+  $('toast-text').textContent = msg;
+  $('toast').classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => $('toast').classList.remove('show'), 2400);
+}
+</script>
+</body>
+</html>
