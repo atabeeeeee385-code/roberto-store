@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>ROBERTO Icon Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+  body{
+    background:#05070d; color:#e5e7eb; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:30px 20px; gap:30px;
+  }
+  h1{
+    font-size:32px; letter-spacing:8px; font-weight:900;
+    background:linear-gradient(90deg,#d4af37,#fff,#d4af37);
+    background-size:200% auto;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    animation:shine 3s linear infinite;
+  }
+  @keyframes shine{to{background-position:200% center;}}
+  p{color:#8892a6; font-size:14px;}
+  .previews{display:flex; gap:30px; flex-wrap:wrap; justify-content:center;}
+  .preview-box{
+    display:flex; flex-direction:column; align-items:center; gap:12px;
+    background:#0f1524; border:1px solid rgba(255,255,255,.08);
+    border-radius:20px; padding:20px;
+  }
+  .preview-box canvas{
+    border-radius:20px;
+    box-shadow:0 20px 50px rgba(212,175,55,.2);
+  }
+  .preview-box span{
+    font-size:12px; color:#d4af37; font-weight:800; letter-spacing:2px;
+  }
+  .btn{
+    background:linear-gradient(135deg,#d4af37,#f59e0b);
+    color:#05070d; padding:16px 40px; border-radius:14px;
+    font-weight:900; font-size:15px; letter-spacing:1px;
+    border:none; cursor:pointer; transition:.3s;
+    box-shadow:0 12px 30px rgba(212,175,55,.35);
+  }
+  .btn:hover{transform:translateY(-3px); box-shadow:0 18px 45px rgba(212,175,55,.55);}
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
+  .note{
+    background:rgba(212,175,55,.08); border:1px solid rgba(212,175,55,.25);
+    border-radius:14px; padding:14px 20px; max-width:600px; text-align:center;
+    font-size:13px; line-height:1.7; color:#d4af37;
+  }
+</style>
+</head>
+<body>
+
+<h1>ROBERTO ICONS</h1>
+<p>مولّد الأيقونات — اضغط الزر ونزّل الاتنين</p>
+
+<div class="previews">
+  <div class="preview-box">
+    <canvas id="c192" width="192" height="192"></canvas>
+    <span>icon-192.png</span>
+  </div>
+  <div class="preview-box">
+    <canvas id="c512" width="512" height="512" style="width:220px;height:220px"></canvas>
+    <span>icon-512.png</span>
+  </div>
+</div>
+
+<button class="btn" onclick="downloadAll()">⬇️ حمّل الأيقونات</button>
+
+<div class="note">
+  💡 هيتنزلك ملفين: <b>icon-192.png</b> و <b>icon-512.png</b><br>
+  حطهم في فولدر <b>icons</b> جوه مشروعك.
+</div>
+
+<script>
+// دالة رسم الأيقونة على Canvas
+function drawIcon(canvas){
+  const ctx = canvas.getContext('2d');
+  const size = canvas.width;
+  const s = size / 512; // مقياس من 512
+
+  // ===== الخلفية =====
+  const bg = ctx.createLinearGradient(0, 0, size, size);
+  bg.addColorStop(0, '#05070d');
+  bg.addColorStop(0.5, '#0a0e1a');
+  bg.addColorStop(1, '#1a1024');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, size, size);
+
+  // ===== إطار ذهبي خارجي =====
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = 6 * s;
+  ctx.strokeRect(10 * s, 10 * s, size - 20 * s, size - 20 * s);
+
+  // ===== إطار ذهبي داخلي رفيع =====
+  ctx.strokeStyle = 'rgba(212,175,55,.35)';
+  ctx.lineWidth = 2 * s;
+  ctx.strokeRect(24 * s, 24 * s, size - 48 * s, size - 48 * s);
+
+  // ===== رأس الروبوت (شكل WALL-E) =====
+
+  // الجسم الرئيسي (المربع الكبير)
+  const bodyGrad = ctx.createLinearGradient(0, size * 0.35, 0, size * 0.75);
+  bodyGrad.addColorStop(0, '#f5e6b8');
+  bodyGrad.addColorStop(0.5, '#d4af37');
+  bodyGrad.addColorStop(1, '#8b6914');
+
+  // إطارات الرأس (العدستين)
+  drawRobotHead(ctx, size, s);
+
+  // ===== اسم ROBERTO =====
+  ctx.font = `900 ${64 * s}px 'Cairo', sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // ظل النص
+  ctx.fillStyle = 'rgba(0,0,0,.5)';
+  ctx.fillText('ROBERTO', size / 2 + 2 * s, size * 0.875 + 2 * s);
+
+  // النص بتدرج ذهبي
+  const txtGrad = ctx.createLinearGradient(size * 0.15, 0, size * 0.85, 0);
+  txtGrad.addColorStop(0, '#d4af37');
+  txtGrad.addColorStop(0.5, '#f7e7a1');
+  txtGrad.addColorStop(1, '#d4af37');
+  ctx.fillStyle = txtGrad;
+  ctx.fillText('ROBERTO', size / 2, size * 0.875);
+
+  // خط ذهبي تحت الاسم
+  ctx.fillStyle = 'rgba(212,175,55,.6)';
+  ctx.fillRect(size * 0.3, size * 0.925, size * 0.4, 2 * s);
+
+  // ===== علامة ✓ صغيرة (روبوت صغير في الركن) =====
+  // (اختياري) ممكن تحطها لو عايز
+
+  // ===== لمعة =====
+  const shineGrad = ctx.createRadialGradient(
+    size * 0.3, size * 0.3, 0,
+    size * 0.3, size * 0.3, size * 0.5
+  );
+  shineGrad.addColorStop(0, 'rgba(255,255,255,.08)');
+  shineGrad.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = shineGrad;
+  ctx.fillRect(0, 0, size, size);
+}
+
+function drawRobotHead(ctx, size, s){
+  const cx = size / 2;
+  const cy = size * 0.42;
+  const scale = size / 512;
+
+  // ===== الجسم الخارجي للرأس (شبه بيضاوي مستدير) =====
+  const headGrad = ctx.createLinearGradient(cx, cy - 90 * scale, cx, cy + 60 * scale);
+  headGrad.addColorStop(0, '#e8d8a8');
+  headGrad.addColorStop(0.5, '#d4af37');
+  headGrad.addColorStop(1, '#8b6914');
+
+  ctx.fillStyle = headGrad;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, 130 * scale, 90 * scale, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // ===== خط رفيع فاصل =====
+  ctx.strokeStyle = 'rgba(0,0,0,.4)';
+  ctx.lineWidth = 2 * scale;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, 130 * scale, 90 * scale, 0, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // ===== العدستين (العيون) =====
+  const eyeOffset = 55 * scale;
+  const eyeRadius = 38 * scale;
+
+  [-1, 1].forEach(side => {
+    const ex = cx + (side * eyeOffset);
+    const ey = cy - 5 * scale;
+
+    // حلقة خارجية داكنة
+    ctx.fillStyle = '#1a1a1a';
+    ctx.beginPath();
+    ctx.arc(ex, ey, eyeRadius + 4 * scale, 0, Math.PI * 2);
+    ctx.fill();
+
+    // العدسة الذهبية
+    const lensGrad = ctx.createRadialGradient(ex - 8 * scale, ey - 8 * scale, 4 * scale, ex, ey, eyeRadius);
+    lensGrad.addColorStop(0, '#f7e7a1');
+    lensGrad.addColorStop(0.4, '#d4af37');
+    lensGrad.addColorStop(0.8, '#8b6914');
+    lensGrad.addColorStop(1, '#1a1a1a');
+
+    ctx.fillStyle = lensGrad;
+    ctx.beginPath();
+    ctx.arc(ex, ey, eyeRadius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // لمعة داخل العدسة
+    ctx.fillStyle = 'rgba(255,255,255,.7)';
+    ctx.beginPath();
+    ctx.arc(ex - 10 * scale, ey - 10 * scale, 8 * scale, 0, Math.PI * 2);
+    ctx.fill();
+
+    // نقطة صغيرة
+    ctx.fillStyle = 'rgba(255,255,255,.9)';
+    ctx.beginPath();
+    ctx.arc(ex + 8 * scale, ey + 8 * scale, 3 * scale, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  // ===== الفم / الفتحة السفلية =====
+  ctx.fillStyle = 'rgba(0,0,0,.5)';
+  ctx.beginPath();
+  ctx.roundRect(
+    cx - 40 * scale,
+    cy + 40 * scale,
+    80 * scale,
+    14 * scale,
+    5 * scale
+  );
+  ctx.fill();
+
+  // ===== خطوط صغيرة على الفم =====
+  ctx.strokeStyle = '#d4af37';
+  ctx.lineWidth = 1.5 * scale;
+  for(let i = -2; i <= 2; i++){
+    ctx.beginPath();
+    ctx.moveTo(cx + i * 12 * scale, cy + 40 * scale);
+    ctx.lineTo(cx + i * 12 * scale, cy + 54 * scale);
+    ctx.stroke();
+  }
+}
+
+// رسم على كلا الكانفاس
+drawIcon(document.getElementById('c192'));
+drawIcon(document.getElementById('c512'));
+
+// تنزيل الكل
+function downloadAll(){
+  const sizes = [
+    { id: 'c192', name: 'icon-192.png' },
+    { id: 'c512', name: 'icon-512.png' }
+  ];
+
+  sizes.forEach((item, i) => {
+    setTimeout(() => {
+      const canvas = document.getElementById(item.id);
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = item.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 'image/png', 1);
+    }, i * 300);
+  });
+}
+</script>
+</body>
+</html>
