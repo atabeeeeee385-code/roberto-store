@@ -4,8 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ROBERTO | Premium Tech Experience</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#d4af37">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ROBERTO">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<meta name="description" content="ROBERTO - متجر الكيبوردات والماوس والملحقات الاحترافية">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --bg:#05070d; --bg2:#0a0e1a; --card:#0f1524;
@@ -30,7 +42,7 @@ button{cursor:none;border:none;background:none;}
 /* ============ CUSTOM CURSOR ============ */
 .cursor-dot, .cursor-ring{
   position:fixed; top:0; left:0; pointer-events:none; z-index:99999;
-  transform:translate(-50%,-50%); transition:opacity .3s;
+  transform:translate(-50%,-50%);
 }
 .cursor-dot{
   width:6px; height:6px; background:var(--gold); border-radius:50%;
@@ -38,7 +50,7 @@ button{cursor:none;border:none;background:none;}
 }
 .cursor-ring{
   width:36px; height:36px; border:1.5px solid rgba(212,175,55,.5);
-  border-radius:50%; transition:width .3s, height .3s, border-color .3s, transform .15s;
+  border-radius:50%; transition:width .3s, height .3s, border-color .3s;
 }
 .cursor-ring.hover{
   width:70px; height:70px; border-color:var(--gold);
@@ -49,7 +61,7 @@ button{cursor:none;border:none;background:none;}
   body,a,button,input{cursor:auto;}
 }
 
-/* ============ LOADING SCREEN ============ */
+/* ============ LOADING ============ */
 .loader{
   position:fixed; inset:0; background:var(--bg); z-index:99998;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -80,19 +92,16 @@ button{cursor:none;border:none;background:none;}
 }
 .loader-txt{
   color:var(--muted); font-size:12px; letter-spacing:4px; margin-top:20px;
-  animation:pulse 2s infinite;
 }
 
 /* ============ THREE.JS CANVAS ============ */
 #three-canvas{
-  position:fixed; inset:0; z-index:0; pointer-events:none;
-  opacity:.9;
+  position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.85;
 }
 
-/* ============ LAYER OVER CONTENT ============ */
 .page{position:relative; z-index:1;}
 
-/* ============ TOP URGENCY BAR ============ */
+/* ============ TOP BAR ============ */
 .top-bar{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   color:#fff; padding:10px 20px; text-align:center; font-size:13px; font-weight:700;
@@ -145,7 +154,7 @@ header{
 .search{
   width:100%;background:rgba(255,255,255,.03);
   border:1px solid var(--line); border-radius:12px;
-  padding:12px 44px 12px 16px;color:#fff;font-size:14px;transition:.3s;
+  padding:12px 16px;color:#fff;font-size:14px;transition:.3s;
 }
 .search:focus{outline:none;border-color:var(--gold);background:rgba(212,175,55,.05);
   box-shadow:0 0 30px rgba(212,175,55,.15);}
@@ -162,106 +171,229 @@ header{
   display:grid;place-items:center;padding:0 5px;box-shadow:0 0 12px rgba(225,29,72,.6);
 }
 
-/* ============ HERO ============ */
+/* ============ HERO CINEMATIC ============ */
 .hero{
-  min-height:92vh; display:flex; align-items:center; justify-content:center;
-  padding:60px 24px; position:relative; overflow:hidden;
-  max-width:1320px; margin:0 auto;
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:80px 30px 60px; position:relative; overflow:hidden;
+  max-width:100%; margin:0 auto;
+}
+.hero::before{
+  content:''; position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(212,175,55,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,175,55,.08) 1px, transparent 1px);
+  background-size:60px 60px;
+  transform:perspective(500px) rotateX(60deg);
+  transform-origin:center bottom;
+  mask-image:linear-gradient(to bottom, transparent, #000 40%, #000 70%, transparent);
+  -webkit-mask-image:linear-gradient(to bottom, transparent, #000 40%, #000 70%, transparent);
+  animation:gridMove 20s linear infinite;
+  opacity:.6;
+  pointer-events:none;
+}
+@keyframes gridMove{
+  from{background-position:0 0;}
+  to{background-position:0 60px;}
+}
+.hero::after{
+  content:''; position:absolute;
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  width:800px; height:800px;
+  background:radial-gradient(circle, rgba(212,175,55,.15), transparent 60%);
+  animation:breathe 4s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes breathe{
+  0%,100%{opacity:.6; transform:translate(-50%,-50%) scale(1);}
+  50%{opacity:1; transform:translate(-50%,-50%) scale(1.15);}
+}
+.hero-bg-text{
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  font-size:min(28vw, 380px); font-weight:900;
+  letter-spacing:-10px; line-height:.85;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(212,175,55,.08);
+  pointer-events:none;
+  user-select:none;
+  white-space:nowrap;
+  z-index:0;
+  transition:transform .3s ease-out;
 }
 .hero-inner{
-  text-align:center; max-width:900px; position:relative; z-index:2;
+  text-align:center; max-width:1100px; position:relative; z-index:2;
+  width:100%;
 }
 .hero-tag{
-  display:inline-flex; align-items:center; gap:10px;
-  padding:10px 22px; border-radius:50px;
-  background:rgba(212,175,55,.08); border:1px solid rgba(212,175,55,.3);
-  color:var(--gold); font-size:12px; font-weight:800; letter-spacing:4px;
-  margin-bottom:32px;
-  backdrop-filter:blur(10px);
+  display:inline-flex; align-items:center; gap:12px;
+  padding:10px 24px; border-radius:50px;
+  background:rgba(212,175,55,.06);
+  border:1px solid rgba(212,175,55,.25);
+  color:var(--gold); font-size:11px; font-weight:800; letter-spacing:5px;
+  margin-bottom:36px;
+  backdrop-filter:blur(20px);
+  animation:floatY 3s ease-in-out infinite;
+  box-shadow:0 8px 30px rgba(212,175,55,.15);
 }
-.hero-tag::before, .hero-tag::after{
-  content:''; width:6px; height:6px; background:var(--gold); border-radius:50%;
-  box-shadow:0 0 10px var(--gold);
+.hero-tag::before{
+  content:''; width:6px; height:6px; background:var(--gold);
+  border-radius:50%; box-shadow:0 0 12px var(--gold);
+  animation:pulse 1.5s infinite;
+}
+@keyframes floatY{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
 }
 .hero h1{
-  font-size:72px; font-weight:900; line-height:1.05; margin-bottom:24px;
-  letter-spacing:-2px;
+  font-size:clamp(38px, 8vw, 108px);
+  font-weight:900; line-height:.95; margin-bottom:30px;
+  letter-spacing:-3px;
 }
-.hero h1 .line1{
-  display:block; color:#fff;
-}
-.hero h1 .line2{
-  display:block;
-  background:linear-gradient(90deg,var(--gold) 0%,#fff 50%,var(--accent2) 100%);
-  background-size:200% auto;
+.hero h1 .char{
+  display:inline-block;
+  background:linear-gradient(180deg, #fff 0%, #f7e7a1 50%, #d4af37 100%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  animation:shine 3s linear infinite;
+  text-shadow:0 0 60px rgba(212,175,55,.4);
+  opacity:0;
+  transform:translateY(100px) rotateX(-90deg) scale(.5);
+  animation:charReveal .9s cubic-bezier(.19,1,.22,1) forwards;
+  will-change:transform,opacity;
 }
+@keyframes charReveal{
+  to{opacity:1; transform:translateY(0) rotateX(0) scale(1);}
+}
+.hero h1 .line1, .hero h1 .line2{display:block;}
 .hero h1 .line3{
-  display:block; font-size:42px; color:var(--muted); margin-top:12px;
-  font-weight:300; letter-spacing:8px;
+  display:block; font-size:clamp(14px, 2vw, 22px);
+  color:var(--muted); margin-top:24px;
+  font-weight:300; letter-spacing:clamp(4px, 1.2vw, 14px);
+  opacity:0;
+  animation:fadeUp .8s .9s forwards;
+  text-transform:uppercase;
+}
+.hero h1 .line3 span{
+  color:var(--gold); margin:0 4px;
+}
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(30px);}
+  to{opacity:1; transform:translateY(0);}
 }
 .hero p{
-  color:var(--muted); font-size:18px; margin:0 auto 40px; max-width:640px;
-  line-height:1.8;
+  color:var(--muted); font-size:clamp(14px, 1.4vw, 17px);
+  margin:0 auto 42px; max-width:640px; line-height:1.9;
+  opacity:0; animation:fadeUp .8s 1.2s forwards;
 }
-.hero-cta{display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom:40px;}
-
+.hero p strong{color:var(--gold); font-weight:700;}
+.hero-cta{
+  display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+  opacity:0; animation:fadeUp .8s 1.4s forwards;
+  margin-bottom:40px;
+}
 .btn-primary{
   background:linear-gradient(135deg,var(--gold),var(--accent2));
-  color:#05070d; padding:18px 42px; border-radius:16px;
+  color:#05070d; padding:20px 48px; border-radius:18px;
   font-weight:900; font-size:15px; letter-spacing:1px;
-  transition:.4s; box-shadow:0 15px 40px rgba(212,175,55,.35);
+  transition:.4s cubic-bezier(.19,1,.22,1);
+  box-shadow:0 20px 60px rgba(212,175,55,.4);
   display:inline-flex;align-items:center;gap:10px;
   position:relative; overflow:hidden;
+  transform-style:preserve-3d;
 }
 .btn-primary::before{
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(135deg,var(--accent2),var(--gold));
-  opacity:0; transition:.4s;
+  content:''; position:absolute; top:0; left:-100%;
+  width:100%; height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
+  transition:.8s;
 }
-.btn-primary:hover::before{opacity:1;}
-.btn-primary:hover{transform:translateY(-4px); box-shadow:0 22px 50px rgba(212,175,55,.55);}
-.btn-primary span{position:relative;z-index:2;}
-
+.btn-primary:hover::before{left:100%;}
+.btn-primary:hover{
+  transform:translateY(-5px) scale(1.02);
+  box-shadow:0 30px 80px rgba(212,175,55,.65);
+}
 .btn-ghost{
-  background:rgba(255,255,255,.03); color:#fff; padding:18px 32px;
-  border-radius:16px; font-weight:700; font-size:14px;
-  border:1px solid var(--line); transition:.3s;
+  background:rgba(255,255,255,.02); color:#fff; padding:20px 40px;
+  border-radius:18px; font-weight:700; font-size:14px;
+  border:1px solid rgba(255,255,255,.1); transition:.3s;
   display:inline-flex;align-items:center;gap:10px;
-  backdrop-filter:blur(10px);
+  backdrop-filter:blur(20px);
 }
-.btn-ghost:hover{background:rgba(255,255,255,.08); border-color:var(--gold);}
-
-.hero-stats{
-  display:flex; gap:50px; justify-content:center; flex-wrap:wrap;
-  margin-top:40px;
-  padding-top:40px;
-  border-top:1px solid var(--line);
+.btn-ghost:hover{
+  background:rgba(212,175,55,.08);
+  border-color:var(--gold);
+  transform:translateY(-3px);
 }
-.hero-stat{text-align:center;}
-.hero-stat .num{
-  font-size:38px; font-weight:900; font-family:'Space Mono',monospace;
-  background:linear-gradient(135deg,var(--gold),var(--accent2));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  display:block;
+.holo-wrap{
+  position:relative;
+  width:240px; height:240px;
+  margin:60px auto 0;
+  opacity:0; animation:fadeUp 1s 1.7s forwards;
+  perspective:1000px;
 }
-.hero-stat .lbl{color:var(--muted); font-size:12px; letter-spacing:3px; margin-top:6px;}
-
-/* scroll indicator */
+.holo{
+  width:100%; height:100%; position:relative;
+  transform-style:preserve-3d;
+  animation:holoSpin 20s linear infinite;
+  transition:transform .15s;
+}
+@keyframes holoSpin{
+  from{transform:rotateY(0);}
+  to{transform:rotateY(360deg);}
+}
+.holo-ring{
+  position:absolute; inset:0;
+  border:1px solid;
+  border-radius:50%;
+  transform-style:preserve-3d;
+}
+.holo-ring:nth-child(1){
+  border-color:rgba(212,175,55,.6);
+  transform:rotateY(0deg);
+  box-shadow:0 0 30px rgba(212,175,55,.4);
+}
+.holo-ring:nth-child(2){
+  border-color:rgba(225,29,72,.5);
+  transform:rotateY(60deg);
+}
+.holo-ring:nth-child(3){
+  border-color:rgba(245,158,11,.5);
+  transform:rotateY(120deg);
+}
+.holo-core{
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:100px; height:100px;
+  background:radial-gradient(circle, var(--gold), var(--accent2), transparent 70%);
+  border-radius:50%;
+  filter:blur(20px);
+  animation:pulse 2s infinite;
+}
 .scroll-indicator{
-  position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
-  display:flex; flex-direction:column; align-items:center; gap:10px;
-  color:var(--muted); font-size:10px; letter-spacing:4px;
-  animation:bounce 2s infinite;
-}
-@keyframes bounce{
-  0%,100%{transform:translate(-50%,0);}
-  50%{transform:translate(-50%,10px);}
+  position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:12px;
+  color:var(--muted); font-size:10px; letter-spacing:6px;
+  z-index:3;
+  opacity:0; animation:fadeUp 1s 2.2s forwards;
 }
 .scroll-indicator .line{
-  width:1px; height:40px;
+  width:1px; height:50px;
   background:linear-gradient(180deg,var(--gold),transparent);
+  position:relative; overflow:hidden;
+}
+.scroll-indicator .line::after{
+  content:''; position:absolute; top:0; left:0; width:100%; height:20%;
+  background:#fff;
+  animation:scrollLine 2s infinite;
+}
+@keyframes scrollLine{
+  0%{top:-20%;}
+  100%{top:100%;}
+}
+@media(max-width:600px){
+  .hero{padding:60px 18px 40px;}
+  .hero h1{letter-spacing:-1px;}
+  .hero-tag{font-size:9px; letter-spacing:3px; padding:8px 16px;}
+  .btn-primary, .btn-ghost{padding:16px 28px; font-size:13px;}
+  .holo-wrap{display:none;}
 }
 
 /* ============ MARQUEE ============ */
@@ -321,7 +453,7 @@ header{
   color:#05070d; border-color:transparent; box-shadow:0 10px 30px rgba(212,175,55,.4);
 }
 
-/* ============ PRODUCTS GRID ============ */
+/* ============ PRODUCTS ============ */
 .products{
   max-width:1320px;margin:0 auto;padding:0 24px;
   display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;
@@ -355,7 +487,6 @@ header{
   opacity:0;transition:.4s;pointer-events:none;
 }
 .card:hover .img::after{opacity:1;}
-
 .card .badges{
   position:absolute;top:14px;right:14px;display:flex;flex-direction:column;gap:8px;z-index:2;
 }
@@ -382,11 +513,9 @@ header{
 }
 .card h3{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:10px;min-height:44px;
   color:#fff;}
-
 .reviews{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:12px;}
 .stars{color:var(--gold);letter-spacing:2px;}
 .reviews .count{color:var(--muted);}
-
 .scarcity{
   display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;
   color:var(--red); margin-bottom:12px; letter-spacing:.5px;
@@ -399,7 +528,6 @@ header{
   background:linear-gradient(90deg,var(--red),var(--accent2));
   border-radius:4px;transition:.6s;
 }
-
 .card .price{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
 .card .price .now{
   font-weight:900;font-size:22px;color:#fff;
@@ -410,9 +538,7 @@ header{
   background:rgba(239,68,68,.15); color:var(--red); font-size:10px;
   padding:3px 8px; border-radius:6px; font-weight:800;
 }
-.save-line{font-size:12px;color:var(--green);font-weight:700;margin-bottom:16px;
-  letter-spacing:.5px;}
-
+.save-line{font-size:12px;color:var(--green);font-weight:700;margin-bottom:16px;}
 .card .actions{display:flex;gap:8px;margin-top:auto;}
 .card .view{
   flex:0 0 46px;background:rgba(255,255,255,.04);border:1px solid var(--line);
@@ -677,10 +803,6 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
   box-shadow:0 12px 30px rgba(37,211,102,.5);
   animation:pulse 2s infinite;
 }
-@keyframes pulse{
-  0%,100%{box-shadow:0 12px 30px rgba(37,211,102,.5),0 0 0 0 rgba(37,211,102,.5);}
-  50%{box-shadow:0 12px 30px rgba(37,211,102,.5),0 0 0 16px rgba(37,211,102,0);}
-}
 
 /* ============ TOASTS ============ */
 .toast-stack{
@@ -719,18 +841,11 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
 
 /* ============ RESPONSIVE ============ */
 @media(max-width:900px){
-  .hero h1{font-size:44px; letter-spacing:-1px;}
-  .hero h1 .line3{font-size:24px; letter-spacing:4px;}
   .section-head h2{font-size:34px;}
   .cta-section h2{font-size:32px;}
   .foot-logo{font-size:32px; letter-spacing:10px;}
-  .hero-stats{gap:30px;}
-  .hero-stat .num{font-size:28px;}
 }
 @media(max-width:600px){
-  .hero h1{font-size:32px;}
-  .hero h1 .line3{font-size:18px; letter-spacing:3px;}
-  .hero{padding:40px 18px; min-height:auto;}
   .logo-text{font-size:17px; letter-spacing:3px;}
   .float-wa{bottom:18px;left:18px;width:54px;height:54px;font-size:26px;}
   .top-bar{font-size:11px;padding:8px 12px;}
@@ -745,21 +860,20 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
 </head>
 <body>
 
-<!-- ============ CURSOR ============ -->
+<!-- CURSOR -->
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- ============ LOADING ============ -->
+<!-- LOADER -->
 <div class="loader" id="loader">
   <div class="loader-logo">ROBERTO</div>
   <div class="loader-bar"><span></span></div>
   <div class="loader-txt">LOADING EXPERIENCE...</div>
 </div>
 
-<!-- ============ THREE.JS CANVAS ============ -->
+<!-- THREE.JS -->
 <canvas id="three-canvas"></canvas>
 
-<!-- ============ PAGE ============ -->
 <div class="page">
 
 <!-- TOP BAR -->
@@ -779,6 +893,8 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
     <div class="search-wrap">
       <input class="search" id="search" type="text" placeholder="🔍 ابحث عن كيبورد، ماوس، حامل...">
     </div>
+    <button class="icon-btn" id="notifyBtn" onclick="askNotify()" title="الإشعارات" style="display:none">🔔</button>
+    <button class="icon-btn" id="installBtn" onclick="installPWA()" title="تثبيت" style="display:none">⬇️</button>
     <button class="icon-btn" onclick="toggleCart()" title="السلة">
       🛒 <span class="badge" id="count">0</span>
     </button>
@@ -787,14 +903,20 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-bg-text" id="heroBgText">ROBERTO</div>
   <div class="hero-inner">
-    <div class="hero-tag">✦ ROBERTO PREMIUM ✦</div>
+    <div class="hero-tag">PREMIUM TECH EXPERIENCE</div>
+
     <h1>
-      <span class="line1">ادخل عالم</span>
-      <span class="line2">الاحتراف الحقيقي</span>
-      <span class="line3">TECH · GAMING · PREMIUM</span>
+      <span class="line1" data-text="ادخل عالم"></span>
+      <span class="line2" data-text="الاحتراف الحقيقي"></span>
+      <span class="line3">TECH <span>·</span> GAMING <span>·</span> PREMIUM</span>
     </h1>
-    <p>كيبوردات ميكانيكال، ماوسات بدقة عالية، وملحقات احترافية<br>منتجات أصلية بضمان حقيقي — توصلك لحد باب البيت</p>
+
+    <p>
+      كيبوردات ميكانيكال، ماوسات بدقة عالية، وملحقات احترافية<br>
+      <strong>منتجات أصلية</strong> بضمان حقيقي — توصلك لحد باب البيت
+    </p>
 
     <div class="hero-cta">
       <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
@@ -805,22 +927,12 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
       </a>
     </div>
 
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <span class="num">2.8K+</span>
-        <span class="lbl">عميل سعيد</span>
-      </div>
-      <div class="hero-stat">
-        <span class="num">120+</span>
-        <span class="lbl">منتج أصلي</span>
-      </div>
-      <div class="hero-stat">
-        <span class="num">24H</span>
-        <span class="lbl">شحن سريع</span>
-      </div>
-      <div class="hero-stat">
-        <span class="num">14D</span>
-        <span class="lbl">استبدال مجاني</span>
+    <div class="holo-wrap">
+      <div class="holo">
+        <div class="holo-ring"></div>
+        <div class="holo-ring"></div>
+        <div class="holo-ring"></div>
+        <div class="holo-core"></div>
       </div>
     </div>
   </div>
@@ -848,7 +960,7 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
   </div>
 </div>
 
-<!-- SECTION: PRODUCTS -->
+<!-- PRODUCTS -->
 <div class="section-head">
   <span class="sub">— FEATURED COLLECTION —</span>
   <h2>منتجات <span>مختارة بعناية</span></h2>
@@ -865,7 +977,7 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
 
 <div class="products" id="products"></div>
 
-<!-- SECTION: TESTIMONIALS -->
+<!-- TESTIMONIALS -->
 <div class="section-head">
   <span class="sub">— TRUSTED BY CUSTOMERS —</span>
   <h2>آراء <span>عملائنا</span></h2>
@@ -908,7 +1020,7 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
   </div>
 </div>
 
-<!-- CTA SECTION -->
+<!-- CTA -->
 <div class="cta-section">
   <div class="cta-inner">
     <h2>جاهز تبدأ <span>تجربتك؟</span></h2>
@@ -932,9 +1044,9 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
   <p style="font-size:12px">جميع الحقوق محفوظة © ROBERTO 2026</p>
 </footer>
 
-</div><!-- /.page -->
+</div>
 
-<!-- ============ CART DRAWER ============ -->
+<!-- CART DRAWER -->
 <div class="overlay" id="overlay" onclick="toggleCart()"></div>
 <aside class="drawer" id="drawer">
   <div class="drawer-head">
@@ -952,7 +1064,7 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
   </div>
 </aside>
 
-<!-- ============ MODAL ============ -->
+<!-- MODAL -->
 <div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -972,7 +1084,7 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
   </div>
 </div>
 
-<!-- ============ EXIT POPUP ============ -->
+<!-- EXIT -->
 <div class="exit-popup" id="exit-popup">
   <div class="exit-box">
     <div class="emoji">🎁</div>
@@ -984,193 +1096,193 @@ footer > p{color:var(--muted); font-size:13px; margin-bottom:24px; letter-spacin
   </div>
 </div>
 
-<!-- FLOATING WHATSAPP -->
+<!-- WHATSAPP -->
 <a class="float-wa" href="https://wa.me/201000000000" target="_blank">💬</a>
 
 <!-- TOASTS -->
 <div class="toast-stack" id="toast-stack"></div>
 <div class="toast-simple" id="toast">✓ <span id="toast-text"></span></div>
 
-<!-- THREE.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 // ==================== CURSOR ====================
 const dot = document.getElementById('cursorDot');
 const ring = document.getElementById('cursorRing');
-let mouseX = 0, mouseY = 0;
-let ringX = 0, ringY = 0;
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
 
-document.addEventListener('mousemove', e=>{
+document.addEventListener('mousemove', e => {
   mouseX = e.clientX; mouseY = e.clientY;
-  dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+  if(dot) dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
 });
 
 function animateRing(){
   ringX += (mouseX - ringX) * 0.15;
   ringY += (mouseY - ringY) * 0.15;
-  ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
+  if(ring) ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%,-50%)`;
   requestAnimationFrame(animateRing);
 }
 animateRing();
 
-document.addEventListener('mouseover', e=>{
+document.addEventListener('mouseover', e => {
   const t = e.target.closest('button, a, .card, .cat, input, .testi');
-  ring.classList.toggle('hover', !!t);
+  if(ring) ring.classList.toggle('hover', !!t);
 });
 
-// ==================== THREE.JS SCENE ====================
+// ==================== THREE.JS ====================
 const canvas = document.getElementById('three-canvas');
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-
 camera.position.z = 8;
 
-// Lights
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
-scene.add(ambientLight);
-const pointLight = new THREE.PointLight(0xd4af37, 1.5, 100);
-pointLight.position.set(10, 10, 10);
-scene.add(pointLight);
-const pointLight2 = new THREE.PointLight(0xe11d48, 1.2, 100);
-pointLight2.position.set(-10, -10, 10);
-scene.add(pointLight2);
+scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+const pL1 = new THREE.PointLight(0xd4af37, 1.5, 100);
+pL1.position.set(10, 10, 10);
+scene.add(pL1);
+const pL2 = new THREE.PointLight(0xe11d48, 1.2, 100);
+pL2.position.set(-10, -10, 10);
+scene.add(pL2);
 
-// Objects
 const objects = [];
 
-// Main torus knot
-const knotGeo = new THREE.TorusKnotGeometry(1.2, 0.35, 100, 16);
-const knotMat = new THREE.MeshStandardMaterial({
-  color: 0xd4af37,
-  metalness: 0.9,
-  roughness: 0.15,
-  emissive: 0x4a3505,
-  emissiveIntensity: 0.3,
-});
-const knot = new THREE.Mesh(knotGeo, knotMat);
+// Torus Knot ذهبي
+const knot = new THREE.Mesh(
+  new THREE.TorusKnotGeometry(1.2, 0.35, 100, 16),
+  new THREE.MeshStandardMaterial({color:0xd4af37, metalness:0.9, roughness:0.15, emissive:0x4a3505, emissiveIntensity:0.3})
+);
 knot.position.set(3.5, 1, -2);
 scene.add(knot);
-objects.push({ mesh: knot, speed: 0.5, floatSpeed: 0.8 });
+objects.push({mesh:knot, speed:0.5, floatSpeed:0.8});
 
 // Icosahedron
-const icoGeo = new THREE.IcosahedronGeometry(1, 0);
-const icoMat = new THREE.MeshStandardMaterial({
-  color: 0xe11d48,
-  metalness: 0.8,
-  roughness: 0.2,
-  wireframe: true,
-});
-const ico = new THREE.Mesh(icoGeo, icoMat);
+const ico = new THREE.Mesh(
+  new THREE.IcosahedronGeometry(1, 0),
+  new THREE.MeshStandardMaterial({color:0xe11d48, metalness:0.8, roughness:0.2, wireframe:true})
+);
 ico.position.set(-3.5, 1.5, -1);
 scene.add(ico);
-objects.push({ mesh: ico, speed: -0.3, floatSpeed: 0.6 });
+objects.push({mesh:ico, speed:-0.3, floatSpeed:0.6});
 
 // Octahedron
-const octGeo = new THREE.OctahedronGeometry(0.8, 0);
-const octMat = new THREE.MeshStandardMaterial({
-  color: 0xf59e0b,
-  metalness: 1,
-  roughness: 0.1,
-});
-const oct = new THREE.Mesh(octGeo, octMat);
+const oct = new THREE.Mesh(
+  new THREE.OctahedronGeometry(0.8, 0),
+  new THREE.MeshStandardMaterial({color:0xf59e0b, metalness:1, roughness:0.1})
+);
 oct.position.set(4, -2.5, -3);
 scene.add(oct);
-objects.push({ mesh: oct, speed: 0.4, floatSpeed: 1 });
+objects.push({mesh:oct, speed:0.4, floatSpeed:1});
 
-// Sphere (glassy)
-const sphGeo = new THREE.SphereGeometry(0.7, 32, 32);
-const sphMat = new THREE.MeshStandardMaterial({
-  color: 0xffffff,
-  metalness: 1,
-  roughness: 0,
-  envMapIntensity: 1,
-});
-const sph = new THREE.Mesh(sphGeo, sphMat);
+// Sphere
+const sph = new THREE.Mesh(
+  new THREE.SphereGeometry(0.7, 32, 32),
+  new THREE.MeshStandardMaterial({color:0xffffff, metalness:1, roughness:0})
+);
 sph.position.set(-4, -2, -2);
 scene.add(sph);
-objects.push({ mesh: sph, speed: 0.6, floatSpeed: 0.7 });
+objects.push({mesh:sph, speed:0.6, floatSpeed:0.7});
 
 // Particles
-const particlesGeo = new THREE.BufferGeometry();
-const particlesCount = 800;
-const positions = new Float32Array(particlesCount * 3);
-for(let i = 0; i < particlesCount * 3; i++){
-  positions[i] = (Math.random() - 0.5) * 40;
-}
-particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-const particlesMat = new THREE.PointsMaterial({
-  color: 0xd4af37,
-  size: 0.03,
-  transparent: true,
-  opacity: 0.6,
-});
-const particles = new THREE.Points(particlesGeo, particlesMat);
+const pGeo = new THREE.BufferGeometry();
+const count = 800;
+const positions = new Float32Array(count * 3);
+for(let i = 0; i < count * 3; i++) positions[i] = (Math.random() - 0.5) * 40;
+pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({
+  color: 0xd4af37, size: 0.03, transparent: true, opacity: 0.6
+}));
 scene.add(particles);
 
-// Mouse influence
-let targetX = 0, targetY = 0;
-document.addEventListener('mousemove', e=>{
-  targetX = (e.clientX / innerWidth) * 2 - 1;
-  targetY = -(e.clientY / innerHeight) * 2 + 1;
+let tX = 0, tY = 0;
+document.addEventListener('mousemove', e => {
+  tX = (e.clientX / innerWidth) * 2 - 1;
+  tY = -(e.clientY / innerHeight) * 2 + 1;
 });
 
 let time = 0;
 function animate(){
   requestAnimationFrame(animate);
   time += 0.01;
-
-  // Rotate objects
-  objects.forEach((o, i)=>{
+  objects.forEach((o, i) => {
     o.mesh.rotation.x += o.speed * 0.005;
     o.mesh.rotation.y += o.speed * 0.008;
     o.mesh.position.y += Math.sin(time * o.floatSpeed + i) * 0.003;
   });
-
-  // Rotate particles slowly
   particles.rotation.y += 0.0005;
-
-  // Camera follow mouse (subtle)
-  camera.position.x += (targetX * 1.5 - camera.position.x) * 0.03;
-  camera.position.y += (targetY * 1.5 - camera.position.y) * 0.03;
+  camera.position.x += (tX * 1.5 - camera.position.x) * 0.03;
+  camera.position.y += (tY * 1.5 - camera.position.y) * 0.03;
   camera.lookAt(scene.position);
-
   renderer.render(scene, camera);
 }
 animate();
 
-window.addEventListener('resize', ()=>{
+window.addEventListener('resize', () => {
   camera.aspect = innerWidth/innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
 });
 
 // ==================== LOADER ====================
-setTimeout(()=>{
-  document.getElementById('loader').classList.add('hide');
+setTimeout(() => {
+  const l = document.getElementById('loader');
+  if(l) l.classList.add('hide');
 }, 2200);
+
+// ==================== HERO CINEMATIC ====================
+document.querySelectorAll('.hero h1 .line1, .hero h1 .line2').forEach((line, lineIdx) => {
+  const text = line.dataset.text;
+  line.innerHTML = text.split('').map((char, i) => {
+    const delay = 0.2 + (lineIdx * 0.4) + (i * 0.04);
+    if(char === ' ') return '<span class="word">&nbsp;</span>';
+    return `<span class="char" style="animation-delay:${delay}s">${char}</span>`;
+  }).join('');
+});
+
+const heroBgText = document.getElementById('heroBgText');
+const heroSection = document.querySelector('.hero');
+
+if(heroBgText && heroSection){
+  heroSection.addEventListener('mousemove', e => {
+    const rect = heroSection.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    heroBgText.style.transform = `translate(calc(-50% + ${x * -40}px), calc(-50% + ${y * -40}px))`;
+  });
+  heroSection.addEventListener('mouseleave', () => {
+    heroBgText.style.transform = 'translate(-50%,-50%)';
+  });
+}
+
+const holo = document.querySelector('.holo');
+if(holo && heroSection){
+  heroSection.addEventListener('mousemove', e => {
+    const rect = heroSection.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    holo.style.transform = `rotateX(${y * -20}deg) rotateY(${x * 40}deg)`;
+  });
+}
 
 // ==================== PRODUCTS DATA ====================
 let products = [];
 const DEFAULT_PRODUCTS = [
   { id:1, name:"كيبورد ميكانيكال Redragon K552", cat:"keyboard", price:1450, old:1700, stock:3, reviews:127, rating:5, best:true,
-    desc:"كيبورد ميكانيكال بمفاتيح حمراء، إضاءة RGB، هيكل معدني متين، مثالي للألعاب والكتابة الطويلة." },
+    desc:"كيبورد ميكانيكال بمفاتيح حمراء، إضاءة RGB، هيكل معدني متين." },
   { id:2, name:"كيبورد لاسلكي Logitech K380", cat:"keyboard", price:950, old:1100, stock:8, reviews:89, rating:5,
-    desc:"كيبورد لاسلكي صغير يتصل بـ 3 أجهزة في نفس الوقت، بطارية تدوم سنتين." },
+    desc:"كيبورد لاسلكي يتصل بـ 3 أجهزة، بطارية تدوم سنتين." },
   { id:3, name:"كيبورد جيمنج RGB Meetion", cat:"keyboard", price:620, old:800, stock:2, reviews:54, rating:4,
     desc:"كيبورد جيمنج اقتصادي بإضاءة RGB ملونة ومقاومة للماء." },
   { id:4, name:"ماوس لاسلكي Logitech M170", cat:"mouse", price:380, old:450, stock:12, reviews:203, rating:5, best:true,
-    desc:"ماوس لاسلكي موثوق، تصميم مريح لليد، بطارية تدوم 12 شهر." },
+    desc:"ماوس لاسلكي موثوق، بطارية تدوم 12 شهر." },
   { id:5, name:"ماوس جيمنج 7200 DPI", cat:"mouse", price:550, old:700, stock:5, reviews:98, rating:5,
-    desc:"ماوس جيمنج بدقة 7200 DPI، 7 أزرار قابلة للبرمجة، إضاءة RGB." },
+    desc:"ماوس جيمنج بدقة 7200 DPI، 7 أزرار قابلة للبرمجة." },
   { id:6, name:"ماوس ريموت للعرض التقديمي", cat:"mouse", price:290, old:0, stock:20, reviews:34, rating:4,
-    desc:"ريموت عرض تقديمي لاسلكي مع مؤشر ليزر، متوافق مع PowerPoint." },
+    desc:"ريموت عرض تقديمي لاسلكي مع مؤشر ليزر." },
   { id:7, name:"حامل لابتوب ألومنيوم", cat:"stand", price:420, old:520, stock:7, reviews:76, rating:5,
     desc:"حامل لابتوب من الألومنيوم، قابل للتعديل بـ 6 مستويات." },
   { id:8, name:"حامل موبايل قابل للتعديل", cat:"stand", price:150, old:0, stock:15, reviews:145, rating:5,
-    desc:"حامل موبايل مكتبي قابل للتعديل، يدعم كل المقاسات." },
+    desc:"حامل موبايل مكتبي قابل للتعديل." },
   { id:9, name:"حامل شاشة ذراع متحرك", cat:"stand", price:890, old:1050, stock:4, reviews:42, rating:4,
     desc:"ذراع شاشة متحرك يدعم شاشات من 13 لـ 27 بوصة." },
   { id:10, name:"سماعة جيمنج مع مايك", cat:"headset", price:780, old:920, stock:9, reviews:112, rating:5, best:true,
@@ -1178,7 +1290,7 @@ const DEFAULT_PRODUCTS = [
   { id:11, name:"سماعة بلوتوث للألعاب", cat:"headset", price:1150, old:0, stock:6, reviews:67, rating:5,
     desc:"سماعة بلوتوث بجودة صوت عالية، تأخير منخفض." },
   { id:12, name:"ماوس باد جيمنج كبير", cat:"mouse", price:180, old:230, stock:25, reviews:89, rating:4,
-    desc:"ماوس باد كبير بمقاس 80×30 سم، سطح ناعم لحركة دقيقة." },
+    desc:"ماوس باد كبير بمقاس 80×30 سم." }
 ];
 
 function loadProducts(){
@@ -1220,9 +1332,7 @@ function render(){
           ${p.best ? `<span class="badge-pill badge-best">🔥 BEST</span>` : ""}
         </div>
         <button class="wish ${wishlist.includes(p.id)?'on':''}" onclick="toggleWish(${p.id},event)">♥</button>
-        <div class="img">
-          ${p.img ? `<img src="${p.img}" alt="${p.name}">` : '📦'}
-        </div>
+        <div class="img">${p.img ? `<img src="${p.img}" alt="${p.name}">` : '📦'}</div>
         <div class="info">
           <span class="tag">${catName(p.cat)}</span>
           <h3>${p.name}</h3>
@@ -1255,88 +1365,86 @@ function render(){
 }
 
 function observeCards(){
-  const obs = new IntersectionObserver(entries=>{
-    entries.forEach((e,i)=>{
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
       if(e.isIntersecting){
-        setTimeout(()=>e.target.classList.add('show'), i*60);
+        setTimeout(() => e.target.classList.add('show'), i * 60);
         obs.unobserve(e.target);
       }
     });
-  },{threshold:.1});
-  document.querySelectorAll('.card').forEach(c=>obs.observe(c));
+  }, {threshold: .1});
+  document.querySelectorAll('.card').forEach(c => obs.observe(c));
 }
 
-// 3D TILT
 function setupTilt(){
-  document.querySelectorAll('.card').forEach(card=>{
-    card.addEventListener('mousemove', e=>{
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotX = (y - centerY) / 20;
-      const rotY = (centerX - x) / 20;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rotX = (y - cy) / 20;
+      const rotY = (cx - x) / 20;
       card.style.transform = `translateY(-8px) perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
     });
-    card.addEventListener('mouseleave', ()=>{
+    card.addEventListener('mouseleave', () => {
       card.style.transform = '';
     });
   });
 }
 
 // ==================== WISHLIST ====================
-function toggleWish(id,e){
+function toggleWish(id, e){
   e.stopPropagation();
   const i = wishlist.indexOf(id);
-  if(i>-1) wishlist.splice(i,1); else wishlist.push(id);
+  if(i > -1) wishlist.splice(i, 1); else wishlist.push(id);
   localStorage.setItem('roberto_wish', JSON.stringify(wishlist));
   e.target.classList.toggle('on');
-  showToast(i>-1 ? "اتشال من المفضلة" : "❤️ اتضاف للمفضلة");
+  showToast(i > -1 ? "اتشال من المفضلة" : "❤️ اتضاف للمفضلة");
 }
 
 // ==================== CART ====================
 function addToCart(id){
-  const p = products.find(x=>x.id===id);
+  const p = products.find(x => x.id === id);
   if(!p) return;
-  const found = cart.find(x=>x.id===id);
+  const found = cart.find(x => x.id === id);
   if(found) found.qty++;
   else cart.push({...p, qty:1});
   saveCart(); updateCart();
   showToast(`✓ اتضاف: ${p.name}`);
   if(!$('drawer').classList.contains('open')) toggleCart();
 }
-function changeQty(id,delta){
-  const item = cart.find(x=>x.id===id);
+function changeQty(id, delta){
+  const item = cart.find(x => x.id === id);
   if(!item) return;
   item.qty += delta;
-  if(item.qty<=0) cart = cart.filter(x=>x.id!==id);
+  if(item.qty <= 0) cart = cart.filter(x => x.id !== id);
   saveCart(); updateCart();
 }
-function removeItem(id){ cart = cart.filter(x=>x.id!==id); saveCart(); updateCart(); }
+function removeItem(id){ cart = cart.filter(x => x.id !== id); saveCart(); updateCart(); }
 function saveCart(){ localStorage.setItem('roberto_cart', JSON.stringify(cart)); }
 
 function updateCart(){
-  const totalQty = cart.reduce((s,i)=>s+i.qty,0);
-  const totalPrice = cart.reduce((s,i)=>s+i.qty*i.price,0);
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+  const totalPrice = cart.reduce((s, i) => s + i.qty * i.price, 0);
   $('count').textContent = totalQty;
   $('total').textContent = totalPrice.toLocaleString('ar-EG') + " ج.م";
 
   const FREE_SHIP = 500;
-  const pct = Math.min(100, (totalPrice/FREE_SHIP)*100);
+  const pct = Math.min(100, (totalPrice / FREE_SHIP) * 100);
   $('ship-bar').style.width = pct + "%";
   if(totalPrice >= FREE_SHIP){
     $('ship-msg').innerHTML = "🎉 مبروك! حصلت على شحن مجاني";
   } else {
-    const remaining = FREE_SHIP - totalPrice;
-    $('ship-msg').innerHTML = `🚚 باقي ${remaining} ج.م للحصول على شحن مجاني`;
+    $('ship-msg').innerHTML = `🚚 باقي ${FREE_SHIP - totalPrice} ج.م للحصول على شحن مجاني`;
   }
 
-  if(cart.length===0){
+  if(cart.length === 0){
     $('items').innerHTML = `<div class="empty">🛒 السلة فاضية<br><small style="color:#5a6478;margin-top:10px;display:block">ابدأ التسوق دلوقتي 🔥</small></div>`;
     return;
   }
-  $('items').innerHTML = cart.map(i=>`
+  $('items').innerHTML = cart.map(i => `
     <div class="item">
       <div class="ico">${i.img ? `<img src="${i.img}">` : '📦'}</div>
       <div class="details">
@@ -1359,7 +1467,7 @@ function toggleCart(){
 
 // ==================== MODAL ====================
 function openModal(id){
-  const p = products.find(x=>x.id===id);
+  const p = products.find(x => x.id === id);
   if(!p) return;
   const discount = p.old ? Math.round((1-p.price/p.old)*100) : 0;
   const saved = p.old ? p.old - p.price : 0;
@@ -1375,7 +1483,7 @@ function openModal(id){
   $('m-desc').textContent = p.desc || 'لا يوجد وصف.';
   $('m-price').innerHTML = `${p.price} ج.م ${p.old ? `<small>${p.old} ج.م</small>` : ""}`;
   $('m-save').innerHTML = saved ? `🎁 بتوفر ${saved} ج.م (${discount}% خصم)` : '';
-  $('m-add').onclick = ()=>{ addToCart(id); closeModal(); };
+  $('m-add').onclick = () => { addToCart(id); closeModal(); };
   $('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1389,7 +1497,7 @@ function showToast(msg){
   $('toast-text').textContent = msg;
   $('toast').classList.add('show');
   clearTimeout(window._tt);
-  window._tt = setTimeout(()=>$('toast').classList.remove('show'), 2400);
+  window._tt = setTimeout(() => $('toast').classList.remove('show'), 2400);
 }
 
 const NAMES = ["محمد","أحمد","سارة","كريم","منة","يوسف","عمر","نور","حسن","ليلى","مريم","خالد"];
@@ -1413,19 +1521,18 @@ function showLivePurchase(){
     </div>
   `;
   $('toast-stack').appendChild(toast);
-  setTimeout(()=>toast.classList.add('show'), 100);
-  setTimeout(()=>{
+  setTimeout(() => toast.classList.add('show'), 100);
+  setTimeout(() => {
     toast.classList.remove('show');
-    setTimeout(()=>toast.remove(), 600);
+    setTimeout(() => toast.remove(), 600);
   }, 6000);
 }
 
 // ==================== COUNTDOWN ====================
 function updateCountdown(){
   const end = new Date();
-  end.setHours(23,59,59,999);
-  const now = new Date();
-  const diff = end - now;
+  end.setHours(23, 59, 59, 999);
+  const diff = end - new Date();
   const h = String(Math.floor(diff/3600000)).padStart(2,'0');
   const m = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
   const s = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
@@ -1434,7 +1541,7 @@ function updateCountdown(){
 
 // ==================== EXIT INTENT ====================
 let exitShown = false;
-document.addEventListener('mouseleave', e=>{
+document.addEventListener('mouseleave', e => {
   if(e.clientY <= 0 && !exitShown && !sessionStorage.getItem('exit_shown')){
     exitShown = true;
     sessionStorage.setItem('exit_shown', '1');
@@ -1445,26 +1552,123 @@ function closeExit(){ $('exit-popup').classList.remove('open'); }
 
 // ==================== CHECKOUT ====================
 function checkout(){
-  if(cart.length===0){ showToast("السلة فاضية!"); return; }
+  if(cart.length === 0){ showToast("السلة فاضية!"); return; }
   const phone = "201000000000";
   let msg = "*طلب جديد من ROBERTO*%0A%0A";
-  cart.forEach(i=> msg += `• ${i.name} × ${i.qty} = ${(i.price*i.qty).toLocaleString('ar-EG')} ج.م%0A`);
-  const total = cart.reduce((s,i)=>s+i.qty*i.price,0);
+  cart.forEach(i => msg += `• ${i.name} × ${i.qty} = ${(i.price*i.qty).toLocaleString('ar-EG')} ج.م%0A`);
+  const total = cart.reduce((s, i) => s + i.qty * i.price, 0);
   msg += `%0A*الإجمالي: ${total.toLocaleString('ar-EG')} ج.م*`;
   window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
 }
 
 // ==================== FILTERS ====================
-document.querySelectorAll('.cat').forEach(b=>{
-  b.onclick = ()=>{
-    document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));
+document.querySelectorAll('.cat').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('.cat').forEach(x => x.classList.remove('active'));
     b.classList.add('active');
     currentCat = b.dataset.cat;
     render();
   };
 });
 $('search').oninput = e => { currentSearch = e.target.value.trim(); render(); };
-document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); closeExit(); } });
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ closeModal(); closeExit(); }
+});
+
+// ==================== PWA + NOTIFICATIONS ====================
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('✅ SW registered'))
+      .catch(err => console.log('❌ SW error:', err));
+  });
+}
+
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = $('installBtn');
+  if(btn) btn.style.display = 'grid';
+});
+
+function installPWA(){
+  if(!deferredPrompt){
+    showToast('مثبّت بالفعل أو المتصفح مش بيدعم');
+    return;
+  }
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(c => {
+    if(c.outcome === 'accepted') showToast('🎉 تم تثبيت ROBERTO');
+    deferredPrompt = null;
+    const btn = $('installBtn');
+    if(btn) btn.style.display = 'none';
+  });
+}
+
+function askNotify(){
+  if(!('Notification' in window)){ showToast('المتصفح مش بيدعم'); return; }
+  Notification.requestPermission().then(perm => {
+    if(perm === 'granted'){
+      showToast('✅ تم تفعيل الإشعارات');
+      $('notifyBtn').style.display = 'none';
+      sendWelcomeNotification();
+      startAutoNotifications();
+    } else {
+      showToast('❌ تم رفض الإشعارات');
+    }
+  });
+}
+
+function sendWelcomeNotification(){
+  if(Notification.permission !== 'granted') return;
+  navigator.serviceWorker.ready.then(reg => {
+    reg.showNotification('مرحباً بك في ROBERTO 🔥', {
+      body: 'خصم إضافي 15% على أول طلب ليك!',
+      icon: 'icons/icon-192.png',
+      badge: 'icons/icon-192.png',
+      vibrate: [200, 100, 200],
+      tag: 'welcome',
+      data: { url: './index.html' }
+    });
+  });
+}
+
+let autoNotifyTimer = null;
+function startAutoNotifications(){
+  if(autoNotifyTimer) return;
+  autoNotifyTimer = setInterval(() => {
+    if(Notification.permission !== 'granted') return;
+    if(document.visibilityState === 'visible') return;
+    const offers = [
+      { title: '🔥 عرض فلاش!', body: 'خصم 20% على الكيبوردات' },
+      { title: '🎁 خصم خاص', body: 'استخدم كود ROBERTO10' },
+      { title: '⚡ وصل حديثاً', body: 'ماوسات جيمنج جديدة' },
+      { title: '🚚 شحن مجاني', body: 'اطلب بأكثر من 500ج' }
+    ];
+    const o = offers[Math.floor(Math.random() * offers.length)];
+    navigator.serviceWorker.ready.then(reg => {
+      reg.showNotification(o.title, {
+        body: o.body,
+        icon: 'icons/icon-192.png',
+        badge: 'icons/icon-192.png',
+        vibrate: [200, 100, 200],
+        tag: 'offer-' + Date.now(),
+        data: { url: './index.html' }
+      });
+    });
+  }, 30 * 60 * 1000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if('Notification' in window && Notification.permission === 'default'){
+    const b = $('notifyBtn');
+    if(b) b.style.display = 'grid';
+  }
+  if('Notification' in window && Notification.permission === 'granted'){
+    startAutoNotifications();
+  }
+});
 
 // ==================== INIT ====================
 render();
